@@ -1,0 +1,49 @@
+Routes - https://drive.google.com/file/d/1k-tRmi1ntxRYxKverkhx4B4NWaeGMO8M/view?usp=sharing
+
+1. /
+  * Have option to create game or join game
+  * When user clicks on "Create game", redirect to "/create" route.
+  * When user click on "Join game", redirect to "/join" route
+
+2. /create
+  * Enter player name text field should be shown
+  * Create game will be shown on UI
+  * On click, call API to get game ID - Initalize game object and player object
+  * On sccuess, user will be redirected to "/waiting/{gameId}/{playerId}"
+
+3. /join
+  * Show the user to text box to enter team Id
+  * Show the user option to enter there name
+  * Call BE to create player in the game
+  * Redirect user to "/{gameId}/{playerId}"
+  * On go back, the user should go back to "/"
+
+4. /join/{gameId}
+  * Show the user an option to enter there name
+  * Show the user "Join game" option
+  * On click of this, create a player object in the game object
+  * On success, redirect user to "/waiting/{gameId}/{playerId}"
+  * On go back, the user should go back to "/"
+
+5. /wating/{gameId}/{playerId}
+  * Show list of players (all players) -
+    * See player name
+    * See if player is ready or not
+    * See option to mark themselves ready
+    * See option to exit the room
+  * For admin --
+    * See option to kick players out
+    * Show option to lock the game
+      * On click of lock, call BE and redirect to "/lock/{gameId}/{playerId}"
+
+6. /lock/{gameId}/{playerId}
+  * UI popup content will show 
+    * Team name
+    * Team players list
+    * Team color
+  * The admin will see an option to 
+    * Unlock room -- redirect to /{gameId}/{playerId}
+    * Start game -- redirect to /game/{gameId}
+
+7. /game/{gameId}
+  * This is the GAME !!!!!!!!!!!!!!!!

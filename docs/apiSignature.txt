@@ -1,0 +1,69 @@
+1. POST /game
+Request - 
+{
+  playerName: string
+}
+Response 200- 
+{
+  gameId: string;
+  playerId: string;
+  token: string;
+}
+
+
+2. PUT /game/join
+Request - 
+{
+  gameId: string;
+  playerName: string;
+}
+Response 200- 
+{
+  gameId: string;
+  playerId: string;
+  token: string;
+}
+
+
+3. PATCH /game/lock
+Request Header - 
+{
+  token: string;
+}
+Response 200-
+{
+  isSuccess: boolean; 
+}
+
+
+4. PATCH /game/unlock
+Request Header - 
+{
+  token: string;
+}
+Response 200-
+{
+  isSuccess: boolean; 
+}
+
+
+5. PATCH /game/start
+Request Header - 
+{
+  token: string;
+}
+Response 200-
+{
+  isSuccess: boolean; 
+}
+
+
+6. DELETE /game/exit
+Request Header - 
+{
+  token: string;
+}
+Response 200-
+{
+  isSuccess: boolean; 
+}
