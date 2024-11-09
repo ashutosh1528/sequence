@@ -1,0 +1,17 @@
+.home {
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    &__button {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+  &__title {
+    font-size: 108px;
+    letter-spacing: 5px;
+  }
+}
