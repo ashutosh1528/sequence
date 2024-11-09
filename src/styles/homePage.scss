@@ -13,5 +13,8 @@
   &__title {
     font-size: 108px;
     letter-spacing: 5px;
+    &:hover {
+      cursor: default;
+    }
   }
 }

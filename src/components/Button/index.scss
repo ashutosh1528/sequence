@@ -36,4 +36,8 @@
     font-size: 20px;
     width: 140px;
   }
+  &__disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }

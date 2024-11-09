@@ -1,7 +1,43 @@
+import { useState } from "react";
+import Button from "../components/Button";
+import "../styles/createPage.scss";
+
 const CreatePage = () => {
+  const [playerName, setPlayerName] = useState("");
+
+  const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerName(e.target.value);
+  };
+
+  const handleCreateGame = () => {
+    if (playerName.length) {
+      console.log("Call the API !");
+    }
+  };
+
   return (
-    <div>
-      <div>Create route;</div>
+    <div className="create__container">
+      <h1 className="create__title">Sequence</h1>
+      <div className="create__container__form">
+        <span className="create__adminText">
+          You will be the admin of this game !
+        </span>
+        <div style={{ display: "flex" }}>
+          <span className="create__nameInput__label">Enter your name : </span>
+          <input
+            className="create__nameInput"
+            placeholder="Type here"
+            onChange={handlePlayerNameChange}
+          />
+        </div>
+        <div className="create__createGameButton">
+          <Button
+            label="Create game"
+            onClick={handleCreateGame}
+            disabled={playerName.length === 0}
+          />
+        </div>
+      </div>
     </div>
   );
 };
