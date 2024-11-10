@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
+import { ToastContextProvider } from "./context/Toast.context";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <ToastContextProvider>
+          <App />
+        </ToastContextProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>

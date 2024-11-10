@@ -1,0 +1,29 @@
+.toast {
+  &__container {
+    &__individual {
+      display: flex;
+      align-items: center;
+      min-width: 100px;
+      border-radius: 8px;
+      font-size: 22px;
+      position: absolute;
+      right: 10px;
+      min-height: 40px;
+      padding: 4px 8px;
+      margin: 8px;
+      z-index: 999;
+    }
+  }
+  &__success {
+    border: 1px solid green;
+    background-color: green;
+  }
+  &__error {
+    border: 1px solid red;
+    background-color: red;
+  }
+  &__warning {
+    border: 1px solid orange;
+    background-color: orange;
+  }
+}
