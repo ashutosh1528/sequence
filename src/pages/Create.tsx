@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import "../styles/createPage.scss";
+import useCreateGame from "../services/useCreateGame";
 
 const CreatePage = () => {
+  const createGame = useCreateGame();
   const [playerName, setPlayerName] = useState("");
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,6 +13,15 @@ const CreatePage = () => {
 
   const handleCreateGame = () => {
     if (playerName.length) {
+      createGame(
+        { playerName },
+        {
+          onSuccess: (res) => {
+            console.log("success", { res });
+          },
+          // onError code !
+        }
+      );
       console.log("Call the API !");
     }
   };
