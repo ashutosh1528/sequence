@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import "../styles/createPage.scss";
 import useCreateGame from "../services/useCreateGame";
 import { useToast } from "../hooks/useToast";
+import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 
 const CreatePage = () => {
   const navigate = useNavigate();
@@ -23,11 +24,11 @@ const CreatePage = () => {
         {
           onSuccess: (res) => {
             if (res.data.isSuccess && res.status === 200) {
-              Cookies.set("gameId", res.data.gameId, {
+              Cookies.set(GAME_ID_COOKIE, res.data.gameId, {
                 secure: true,
                 sameSite: "Strict",
               });
-              Cookies.set("playerId", res.data.playerId, {
+              Cookies.set(PLAYER_ID_COOKIE, res.data.playerId, {
                 secure: true,
                 sameSite: "Strict",
               });
@@ -38,7 +39,6 @@ const CreatePage = () => {
           // onError code !
         }
       );
-      console.log("Call the API !");
     }
   };
 
