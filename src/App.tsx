@@ -13,7 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="create" element={<CreatePage />} />
-        <Route path="join" element={<JoinPage />} />
+        <Route path="join/:gameId?" element={<JoinPage />} />
         <Route
           path="waiting"
           element={<PrivateRoute Component={WaitingPage} />}

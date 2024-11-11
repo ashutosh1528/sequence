@@ -1,0 +1,45 @@
+.join {
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    &__form {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid;
+      border-radius: 8px;
+      padding: 16px 32px;
+      gap: 24px;
+    }
+  }
+  &__title {
+    font-size: 108px;
+    letter-spacing: 5px;
+    &:hover {
+      cursor: default;
+    }
+  }
+  &__titleText {
+    font-size: 32px;
+    margin-bottom: 8px;
+    align-self: center;
+  }
+  &__nameInput {
+    font-size: 24px;
+    margin-left: 8px;
+    font-family: inherit;
+    border: none;
+    border-bottom: 1px solid;
+    &:focus-visible {
+      outline: none;
+    }
+    &__label {
+      font-size: 24px;
+    }
+  }
+  &__createGameButton {
+    margin-top: 8px;
+    align-self: flex-end;
+  }
+}
