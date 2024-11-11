@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import Button from "../components/Button";
 import "../styles/createPage.scss";
 import useCreateGame from "../services/useCreateGame";
+import { useToast } from "../hooks/useToast";
 
 const CreatePage = () => {
+  const navigate = useNavigate();
+  const toast = useToast();
   const createGame = useCreateGame();
   const [playerName, setPlayerName] = useState("");
 
@@ -17,7 +22,18 @@ const CreatePage = () => {
         { playerName },
         {
           onSuccess: (res) => {
-            console.log("success", { res });
+            if (res.data.isSuccess && res.status === 200) {
+              Cookies.set("gameId", res.data.gameId, {
+                secure: true,
+                sameSite: "Strict",
+              });
+              Cookies.set("playerId", res.data.playerId, {
+                secure: true,
+                sameSite: "Strict",
+              });
+              toast?.success("Game created successfully !");
+              navigate("/waiting");
+            }
           },
           // onError code !
         }
