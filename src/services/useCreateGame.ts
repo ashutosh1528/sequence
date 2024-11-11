@@ -9,7 +9,9 @@ type CreateGamePayload = {
 const useCreateGame = () => {
   const { mutate: createGame } = useMutation({
     mutationFn: (payload: CreateGamePayload) => {
-      return axios.post(`${API_BASE_URL}/game`, payload);
+      return axios.post(`${API_BASE_URL}/game`, payload, {
+        withCredentials: true,
+      });
     },
   });
   return createGame;
