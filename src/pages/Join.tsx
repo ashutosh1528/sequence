@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
+import InputMask from "react-input-mask";
 import Button from "../components/Button";
 import useJoinGame from "../services/useJoinGame";
 import "../styles/joinPage.scss";
@@ -30,7 +31,8 @@ const JoinPage = () => {
 
   const handleGameIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!gameId) {
-      setUserGameId(e?.target?.value);
+      const value = e?.target?.value?.replace(/\s+/g, "").toLowerCase();
+      setUserGameId(value);
     }
   };
 
@@ -39,7 +41,10 @@ const JoinPage = () => {
   };
 
   const isFormValid = () => {
-    return Boolean(userGameId && playerName);
+    const pattern = /^[a-z]{3}-[a-z]{3}-[a-z]{3}$/;
+    const isGameIdInPattern = pattern.test(userGameId);
+    const isGameIdValid = userGameId.length === 11 && isGameIdInPattern;
+    return isGameIdValid && Boolean(playerName);
   };
 
   const handleJoinGame = () => {
@@ -72,9 +77,11 @@ const JoinPage = () => {
         <span className="join__titleText">{getTitle()}</span>
         <div style={{ display: "flex" }}>
           <span className="join__nameInput__label">{getLabel()}</span>
-          <input
+          <InputMask
+            mask={"aaa - aaa - aaa"}
+            placeholder="xxx - xxx - xxx"
+            maskChar=""
             className="join__nameInput"
-            placeholder="Type here"
             value={userGameId}
             onChange={handleGameIdChange}
             disabled={!!gameId}
