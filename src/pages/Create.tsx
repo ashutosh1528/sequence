@@ -6,6 +6,7 @@ import "../styles/createPage.scss";
 import useCreateGame from "../services/useCreateGame";
 import { useToast } from "../hooks/useToast";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
+import socket from "../services/socket";
 
 const CreatePage = () => {
   const navigate = useNavigate();
@@ -32,8 +33,19 @@ const CreatePage = () => {
                 secure: true,
                 sameSite: "Strict",
               });
-              toast?.success("Game created successfully !");
-              navigate("/waiting");
+
+              socket.connect();
+              socket.emit(
+                "createGameRoom",
+                {
+                  gameId: res.data.gameId,
+                  playerId: res.data.playerId,
+                },
+                (data: { roomId: string }) => {
+                  toast?.success("Game created successfully !");
+                  navigate("/waiting");
+                }
+              );
             }
           },
           // onError code !

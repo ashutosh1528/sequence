@@ -7,6 +7,7 @@ import useJoinGame from "../services/useJoinGame";
 import "../styles/joinPage.scss";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 import { useToast } from "../hooks/useToast";
+import socket from "../services/socket";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -61,8 +62,18 @@ const JoinPage = () => {
               secure: true,
               sameSite: "Strict",
             });
-            toast?.success("Game created successfully !");
-            navigate("/waiting");
+            socket.connect();
+            socket.emit(
+              "joinGameRoom",
+              {
+                gameId: userGameId,
+                playerId: res.data.playerId,
+              },
+              (data: { roomId: string }) => {
+                toast?.success("Game joined successfully !");
+                navigate("/waiting");
+              }
+            );
           },
           // onError
         }
