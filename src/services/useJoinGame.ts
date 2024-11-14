@@ -9,7 +9,11 @@ type JoinGamePayload = {
 
 type JoinGameResponse = {
   isSuccess: boolean;
-  playerId: string;
+  gameId: string;
+  id: string;
+  name: string;
+  isAdmin: boolean;
+  isOnline: boolean;
 };
 
 const useJoinGame = () => {

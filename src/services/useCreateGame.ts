@@ -9,7 +9,10 @@ type CreateGamePayload = {
 type CreateGameResponse = {
   isSuccess: boolean;
   gameId: string;
-  playerId: string;
+  id: string;
+  name: string;
+  isAdmin: boolean;
+  isOnline: boolean;
 };
 
 const useCreateGame = () => {

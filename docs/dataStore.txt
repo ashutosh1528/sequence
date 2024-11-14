@@ -8,10 +8,14 @@
   };
   board: Cell[][]; // board
   players: {
+    currentPlayerTurn: string;
+    playerSequence: string[];
     playerId: {
+      id: string;
       name: string;
       isOnline: boolean;
       teamId: string;
+      isAdmin: boolean;
     }
   },
   teams: {

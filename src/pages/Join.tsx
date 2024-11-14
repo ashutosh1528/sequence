@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import useJoinGame from "../services/useJoinGame";
 import socket from "../services/socket";
 import { setInitalUserDetails } from "../store/slices/user.slice";
+import { addPlayer } from "../store/slices/players.slice";
 import { useToast } from "../hooks/useToast";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 import "../styles/joinPage.scss";
@@ -61,14 +62,23 @@ const JoinPage = () => {
               secure: true,
               sameSite: "Strict",
             });
-            Cookies.set(PLAYER_ID_COOKIE, res.data.playerId, {
+            Cookies.set(PLAYER_ID_COOKIE, res.data.id, {
               secure: true,
               sameSite: "Strict",
             });
             dispatch(
               setInitalUserDetails({
-                gameId: userGameId,
-                playerId: res.data.playerId,
+                gameId: res.data.gameId,
+                playerId: res.data.id,
+                name: res.data.name,
+              })
+            );
+            dispatch(
+              addPlayer({
+                id: res.data.id,
+                name: res.data.name,
+                isAdmin: res.data.isAdmin,
+                isOnline: res.data.isOnline,
               })
             );
             socket.connect();
@@ -76,9 +86,9 @@ const JoinPage = () => {
               "joinGameRoom",
               {
                 gameId: userGameId,
-                playerId: res.data.playerId,
+                playerId: res.data.id,
               },
-              (data: { roomId: string }) => {
+              () => {
                 toast?.success("Game joined successfully !");
                 navigate("/waiting");
               }
