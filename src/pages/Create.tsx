@@ -1,20 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import Button from "../components/Button";
-import socket from "../services/socket";
 import useCreateGame from "../services/useCreateGame";
-import { useToast } from "../hooks/useToast";
+import useSocket from "../services/socket/useSocket";
 import { setInitalUserDetails } from "../store/slices/user.slice";
 import { addPlayer } from "../store/slices/players.slice";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 import "../styles/createPage.scss";
 
 const CreatePage = () => {
+  const { createGameEvent } = useSocket();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const toast = useToast();
   const createGame = useCreateGame();
   const [playerName, setPlayerName] = useState("");
 
@@ -52,19 +49,10 @@ const CreatePage = () => {
                   isOnline: res.data.isOnline,
                 })
               );
-
-              socket.connect();
-              socket.emit(
-                "createGameRoom",
-                {
-                  gameId: res.data.gameId,
-                  playerId: res.data.id,
-                },
-                () => {
-                  toast?.success("Game created successfully !");
-                  navigate("/waiting");
-                }
-              );
+              createGameEvent({
+                gameId: res.data.gameId,
+                playerId: res.data.id,
+              });
             }
           },
           // onError code !

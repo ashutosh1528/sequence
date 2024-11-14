@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
 import Button from "../components/Button";
 import useJoinGame from "../services/useJoinGame";
-import socket from "../services/socket";
+import useSocket from "../services/socket/useSocket";
 import { setInitalUserDetails } from "../store/slices/user.slice";
 import { addPlayer } from "../store/slices/players.slice";
-import { useToast } from "../hooks/useToast";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 import "../styles/joinPage.scss";
 
 const JoinPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const toast = useToast();
+  const { createGameEvent } = useSocket();
   const { gameId } = useParams();
   const joinGame = useJoinGame();
   const [userGameId, setUserGameId] = useState(gameId || "");
@@ -81,18 +79,7 @@ const JoinPage = () => {
                 isOnline: res.data.isOnline,
               })
             );
-            socket.connect();
-            socket.emit(
-              "joinGameRoom",
-              {
-                gameId: userGameId,
-                playerId: res.data.id,
-              },
-              () => {
-                toast?.success("Game joined successfully !");
-                navigate("/waiting");
-              }
-            );
+            createGameEvent({ gameId: userGameId, playerId: res.data.id });
           },
           // onError
         }
