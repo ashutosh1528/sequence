@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import Button from "../components/Button";
-import "../styles/createPage.scss";
+import socket from "../services/socket";
 import useCreateGame from "../services/useCreateGame";
 import { useToast } from "../hooks/useToast";
+import { setInitalUserDetails } from "../store/slices/user.slice";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
-import socket from "../services/socket";
+import "../styles/createPage.scss";
 
 const CreatePage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
   const createGame = useCreateGame();
@@ -33,6 +36,12 @@ const CreatePage = () => {
                 secure: true,
                 sameSite: "Strict",
               });
+              dispatch(
+                setInitalUserDetails({
+                  gameId: res.data.gameId,
+                  playerId: res.data.playerId,
+                })
+              );
 
               socket.connect();
               socket.emit(

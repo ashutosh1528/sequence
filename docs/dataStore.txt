@@ -1,0 +1,24 @@
+{
+  gameId: string; // user
+  playerId: string; // user
+  cards: [Card]; // user
+  teamId: string; // user
+  score: {
+    teamId: number
+  };
+  board: Cell[][]; // board
+  players: {
+    playerId: {
+      name: string;
+      isOnline: boolean;
+      teamId: string;
+    }
+  },
+  teams: {
+    teamId: {
+      players: string[];
+      score: number;
+      color: RED | GREEN | BLUE
+    }
+  }
+}

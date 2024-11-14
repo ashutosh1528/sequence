@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
 import InputMask from "react-input-mask";
+import Cookies from "js-cookie";
 import Button from "../components/Button";
 import useJoinGame from "../services/useJoinGame";
-import "../styles/joinPage.scss";
-import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
-import { useToast } from "../hooks/useToast";
 import socket from "../services/socket";
+import { setInitalUserDetails } from "../store/slices/user.slice";
+import { useToast } from "../hooks/useToast";
+import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
+import "../styles/joinPage.scss";
 
 const JoinPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
   const { gameId } = useParams();
@@ -62,6 +65,12 @@ const JoinPage = () => {
               secure: true,
               sameSite: "Strict",
             });
+            dispatch(
+              setInitalUserDetails({
+                gameId: userGameId,
+                playerId: res.data.playerId,
+              })
+            );
             socket.connect();
             socket.emit(
               "joinGameRoom",
