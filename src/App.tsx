@@ -6,10 +6,8 @@ import WaitingPage from "./pages/Waiting";
 import LockPage from "./pages/Lock";
 import GamePage from "./pages/Game";
 import PrivateRoute from "./components/PrivateRoute";
-import useSocket from "./services/socket/useSocket";
 
 const App = () => {
-  useSocket();
   return (
     <div style={{ padding: 8, height: "98vh" }}>
       <Routes>

@@ -5,7 +5,7 @@ import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
 import Button from "../components/Button";
 import useJoinGame from "../services/useJoinGame";
-import useSocket from "../services/socket/useSocket";
+import { useSocket } from "../services/socket/socket";
 import { setInitalUserDetails } from "../store/slices/user.slice";
 import { addPlayer } from "../store/slices/players.slice";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
@@ -13,7 +13,7 @@ import "../styles/joinPage.scss";
 
 const JoinPage = () => {
   const dispatch = useDispatch();
-  const { createGameEvent } = useSocket();
+  const { joinGameEvent } = useSocket();
   const { gameId } = useParams();
   const joinGame = useJoinGame();
   const [userGameId, setUserGameId] = useState(gameId || "");
@@ -79,7 +79,7 @@ const JoinPage = () => {
                 isOnline: res.data.isOnline,
               })
             );
-            createGameEvent({ gameId: userGameId, playerId: res.data.id });
+            joinGameEvent({ gameId: userGameId, playerId: res.data.id });
           },
           // onError
         }

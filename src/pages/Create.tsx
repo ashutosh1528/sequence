@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import Button from "../components/Button";
 import useCreateGame from "../services/useCreateGame";
-import useSocket from "../services/socket/useSocket";
+import { useSocket } from "../services/socket/socket";
 import { setInitalUserDetails } from "../store/slices/user.slice";
 import { addPlayer } from "../store/slices/players.slice";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
