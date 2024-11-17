@@ -7,12 +7,14 @@ export interface UserState {
   gameId: string;
   playerId: string;
   name: string;
+  isAdmin: boolean;
 }
 
 const initialState: UserState = {
   gameId: "",
   playerId: "",
   name: "",
+  isAdmin: false,
 };
 
 export const userSlice = createSlice({
@@ -23,6 +25,7 @@ export const userSlice = createSlice({
       state.gameId = action.payload.gameId || "";
       state.playerId = action.payload.playerId || "";
       state.name = toTitleCase(action.payload.name || "");
+      state.isAdmin = action.payload.isAdmin || false;
     },
   },
 });

@@ -5,3 +5,5 @@ export type AddPlayer = {
   isAdmin: boolean;
   teamId?: string;
 };
+
+export type PlayersList = Record<string, AddPlayer>;

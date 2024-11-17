@@ -39,6 +39,7 @@ const CreatePage = () => {
                   gameId: res.data.gameId,
                   playerId: res.data.id,
                   name: res.data.name,
+                  isAdmin: res.data.isAdmin,
                 })
               );
               dispatch(

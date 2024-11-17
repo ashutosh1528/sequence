@@ -23,7 +23,7 @@ const useJoinGame = () => {
     JoinGamePayload
   >({
     mutationFn: (payload: JoinGamePayload) => {
-      return axios.patch(`${API_BASE_URL}/game/join`, payload, {
+      return axios.put(`${API_BASE_URL}/game/join`, payload, {
         withCredentials: true,
       });
     },
