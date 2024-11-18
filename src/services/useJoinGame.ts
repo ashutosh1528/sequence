@@ -14,6 +14,7 @@ type JoinGameResponse = {
   name: string;
   isAdmin: boolean;
   isOnline: boolean;
+  isReady: boolean;
 };
 
 const useJoinGame = () => {

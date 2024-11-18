@@ -4,6 +4,8 @@ import axios from "axios";
 import { API_BASE_URL } from "./constants";
 import { setInitalPlayerList } from "../store/slices/players.slice";
 import { setInitalUserDetails } from "../store/slices/user.slice";
+import Cookies from "js-cookie";
+import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 
 export enum GAME_STATUS {
   "HOME" = "HOME",
@@ -16,6 +18,7 @@ type PlayerDetails = {
   name: string;
   isAdmin: boolean;
   isOnline: boolean;
+  isReady: boolean;
 };
 type GetGameDetailsResponse = {
   gameId: string;
@@ -27,13 +30,9 @@ type GetGameDetailsResponse = {
   gameStatus: GAME_STATUS;
 };
 
-const useGetGameDetails = ({
-  gameId,
-  playerId,
-}: {
-  gameId: string;
-  playerId: string;
-}) => {
+const useGetGameDetails = () => {
+  const gameId = Cookies.get(GAME_ID_COOKIE) || "";
+  const playerId = Cookies.get(PLAYER_ID_COOKIE) || "";
   const dispatch = useDispatch();
   return useQuery<GetGameDetailsResponse>({
     queryKey: [gameId, playerId],
@@ -55,6 +54,7 @@ const useGetGameDetails = ({
           playerId: data.playerId,
           name: data?.players[data?.playerId].name,
           isAdmin: data?.players[data?.playerId].isAdmin,
+          isReady: data?.players[data?.playerId].isReady,
         })
       );
       return data;

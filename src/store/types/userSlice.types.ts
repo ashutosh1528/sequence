@@ -3,4 +3,5 @@ export type GetInitalDetails = {
   playerId: string;
   name: string;
   isAdmin: boolean;
+  isReady: boolean;
 };

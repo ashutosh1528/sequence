@@ -70,6 +70,7 @@ const JoinPage = () => {
                 playerId: res.data.id,
                 name: res.data.name,
                 isAdmin: res.data.isAdmin,
+                isReady: res.data.isReady,
               })
             );
             dispatch(
@@ -78,6 +79,7 @@ const JoinPage = () => {
                 name: res.data.name,
                 isAdmin: res.data.isAdmin,
                 isOnline: res.data.isOnline,
+                isReady: res.data.isReady,
               })
             );
             joinGameEvent({ gameId: userGameId, playerId: res.data.id });

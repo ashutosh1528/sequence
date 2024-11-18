@@ -13,6 +13,7 @@ type CreateGameResponse = {
   name: string;
   isAdmin: boolean;
   isOnline: boolean;
+  isReady: boolean;
 };
 
 const useCreateGame = () => {

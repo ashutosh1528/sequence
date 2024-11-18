@@ -40,6 +40,7 @@ const CreatePage = () => {
                   playerId: res.data.id,
                   name: res.data.name,
                   isAdmin: res.data.isAdmin,
+                  isReady: res.data.isReady,
                 })
               );
               dispatch(
@@ -48,6 +49,7 @@ const CreatePage = () => {
                   name: res.data.name,
                   isAdmin: res.data.isAdmin,
                   isOnline: res.data.isOnline,
+                  isReady: res.data.isReady,
                 })
               );
               createGameEvent({

@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { AddPlayer, PlayersList } from "../types/playersSlice.types";
+import {
+  AddPlayer,
+  PlayersList,
+  // SetOnlineStatus,
+  SetReadyStatus,
+} from "../types/playersSlice.types";
 import { toTitleCase } from "../../utils/toProperCase";
 
 export interface PlayersState {
@@ -11,6 +16,7 @@ export interface PlayersState {
       isOnline: boolean;
       teamId: string;
       isAdmin: boolean;
+      isReady: boolean;
     };
   };
   playerList: string[];
@@ -34,6 +40,7 @@ export const playersSlice = createSlice({
             isOnline: player.isOnline,
             name: toTitleCase(player.name),
             teamId: player?.teamId || "",
+            isReady: player?.isReady || false,
           };
         }
         if (!state.playerList.includes(player.id)) {
@@ -50,15 +57,33 @@ export const playersSlice = createSlice({
           isOnline: action.payload.isOnline,
           name: toTitleCase(action.payload.name),
           teamId: action.payload.teamId || "",
+          isReady: action.payload.isReady || false,
         };
         if (!state.playerList.includes(playerId)) {
           state.playerList.push(playerId);
         }
       }
     },
+    setReadyStatus: (state, action: PayloadAction<SetReadyStatus>) => {
+      const player = state.players[action?.payload?.playerId || ""];
+      if (Object.keys(player).length) {
+        player.isReady = action?.payload?.status || false;
+      }
+    },
+    // setOnlineStatus: (state, action: PayloadAction<SetOnlineStatus>) => {
+    //   const player = state.players[action?.payload?.playerId || ""];
+    //   if (Object.keys(player).length) {
+    //     player.isOnline = action?.payload?.status || false;
+    //   }
+    // },
   },
 });
 
-export const { addPlayer, setInitalPlayerList } = playersSlice.actions;
+export const {
+  addPlayer,
+  setInitalPlayerList,
+  setReadyStatus,
+  // setOnlineStatus,
+} = playersSlice.actions;
 
 export default playersSlice.reducer;
