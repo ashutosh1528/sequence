@@ -71,6 +71,7 @@ const JoinPage = () => {
                 name: res.data.name,
                 isAdmin: res.data.isAdmin,
                 isReady: res.data.isReady,
+                isOnline: res.data.isOnline,
               })
             );
             dispatch(

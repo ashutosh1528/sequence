@@ -9,6 +9,7 @@ export interface UserState {
   name: string;
   isAdmin: boolean;
   isReady: boolean;
+  isOnline: boolean;
 }
 
 const initialState: UserState = {
@@ -17,6 +18,7 @@ const initialState: UserState = {
   name: "",
   isAdmin: false,
   isReady: false,
+  isOnline: false,
 };
 
 export const userSlice = createSlice({
@@ -29,6 +31,7 @@ export const userSlice = createSlice({
       state.name = toTitleCase(action?.payload?.name || "");
       state.isAdmin = action?.payload?.isAdmin || false;
       state.isReady = action?.payload?.isReady || false;
+      state.isOnline = action?.payload?.isOnline || false;
     },
     setPlayerReadyStatus: (state, action: PayloadAction<boolean>) => {
       state.isReady = action?.payload;

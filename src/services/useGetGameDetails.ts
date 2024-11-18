@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { API_BASE_URL } from "./constants";
 import { setInitalPlayerList } from "../store/slices/players.slice";
 import { setInitalUserDetails } from "../store/slices/user.slice";
-import Cookies from "js-cookie";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 
 export enum GAME_STATUS {
@@ -40,7 +40,6 @@ const useGetGameDetails = () => {
     retry: 0,
     gcTime: Infinity,
     staleTime: Infinity, // Ensures data is never considered stale
-    // cacheTime: 1000 * 60 * 10, // Keeps data in cache for 10 minutes
     queryFn: () => {
       return axios
         .get(`${API_BASE_URL}/game`, { withCredentials: true })
@@ -55,6 +54,7 @@ const useGetGameDetails = () => {
           name: data?.players[data?.playerId].name,
           isAdmin: data?.players[data?.playerId].isAdmin,
           isReady: data?.players[data?.playerId].isReady,
+          isOnline: data?.players[data?.playerId].isOnline,
         })
       );
       return data;

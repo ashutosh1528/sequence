@@ -4,4 +4,5 @@ export type GetInitalDetails = {
   name: string;
   isAdmin: boolean;
   isReady: boolean;
+  isOnline: boolean;
 };
