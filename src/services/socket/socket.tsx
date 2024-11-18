@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import socket from "../socket";
 import {
   addPlayer,
-  // setOnlineStatus,
+  setOnlineStatus,
   setReadyStatus,
 } from "../../store/slices/players.slice";
 import { useToast } from "../../hooks/useToast";
-// import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
+import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
 
 type JoinType = {
   gameId: string;
@@ -19,15 +19,15 @@ type JoinType = {
 interface SocketContextProps {
   createGameEvent: (data: JoinType) => void;
   joinGameEvent: (data: JoinType) => void;
-  // playerOfflineEvent: () => void;
-  // playerOnlineEvent: () => void;
+  playerOfflineEvent: () => void;
+  playerOnlineEvent: () => void;
 }
 
 const SocketContext = createContext<SocketContextProps | null>(null);
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  // const gameId = Cookies.get(GAME_ID_COOKIE) || "";
-  // const playerId = Cookies.get(PLAYER_ID_COOKIE) || "";
+  const gameId = Cookies.get(GAME_ID_COOKIE) || "";
+  const playerId = Cookies.get(PLAYER_ID_COOKIE) || "";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
@@ -49,14 +49,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         })
       );
     });
-    // socket.on("playerOnlineStatus", (data) => {
-    //   dispatch(
-    //     setOnlineStatus({
-    //       playerId: data?.playerId || "",
-    //       status: data?.status || false,
-    //     })
-    //   );
-    // });
+    socket.on("playerOnlineStatus", (data) => {
+      dispatch(
+        setOnlineStatus({
+          playerId: data?.playerId || "",
+          status: data?.status || false,
+        })
+      );
+    });
   }, [dispatch]);
 
   const createGameEvent = ({ gameId, playerId }: JoinType) => {
@@ -79,34 +79,37 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // const playerOfflineEvent = () => {
-  //   if (playerId && gameId) {
-  //     socket.emit("markPlayerOnlineStatus", {
-  //       playerId,
-  //       gameId,
-  //       status: false,
-  //     });
-  //   }
-  // };
+  const playerOfflineEvent = () => {
+    if (playerId && gameId) {
+      socket.emit("markPlayerOnlineStatus", {
+        playerId,
+        gameId,
+        status: false,
+      });
+      socket.disconnect();
+    }
+  };
 
-  // const playerOnlineEvent = () => {
-  //   if (!socket.connected && playerId && gameId) {
-  //     socket.connect();
-  //     socket.emit("markPlayerOnlineStatus", {
-  //       playerId,
-  //       gameId,
-  //       status: true,
-  //     });
-  //   }
-  // };
+  const playerOnlineEvent = () => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+    if (playerId && gameId) {
+      socket.emit("markPlayerOnlineStatus", {
+        playerId,
+        gameId,
+        status: true,
+      });
+    }
+  };
 
   return (
     <SocketContext.Provider
       value={{
         createGameEvent,
         joinGameEvent,
-        // playerOnlineEvent,
-        // playerOfflineEvent,
+        playerOnlineEvent,
+        playerOfflineEvent,
       }}
     >
       {children}

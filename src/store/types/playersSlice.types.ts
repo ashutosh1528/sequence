@@ -14,7 +14,7 @@ export type SetReadyStatus = {
   status: boolean;
 };
 
-// export type SetOnlineStatus = {
-//   playerId: string;
-//   status: boolean;
-// };
+export type SetOnlineStatus = {
+  playerId: string;
+  status: boolean;
+};

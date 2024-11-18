@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from "./pages/Home";
 import CreatePage from "./pages/Create";
@@ -8,17 +8,22 @@ import LockPage from "./pages/Lock";
 import GamePage from "./pages/Game";
 import PrivateRoute from "./components/PrivateRoute";
 import useGetGameDetails, { GAME_STATUS } from "./services/useGetGameDetails";
-// import { useSocket } from "./services/socket/socket";
+import { useSocket } from "./services/socket/socket";
 import useNavigateToHome from "./hooks/useNavigateToHome";
 
 const App = () => {
-  // const { playerOnlineEvent, playerOfflineEvent } = useSocket();
+  const { playerOnlineEvent, playerOfflineEvent } = useSocket();
+  const onlineEventRef = useRef(false);
   const navigate = useNavigate();
   const navigateToHome = useNavigateToHome();
   const { data, isLoading, isError } = useGetGameDetails();
 
   useEffect(() => {
     const status = data?.gameStatus;
+    if (status !== GAME_STATUS.HOME && onlineEventRef.current === false) {
+      onlineEventRef.current = true;
+      playerOnlineEvent();
+    }
     if (status === GAME_STATUS.HOME) return navigateToHome();
     if (status === GAME_STATUS.GAME) return navigate("/game");
     if (status === GAME_STATUS.LOCK) return navigate("/lock");
@@ -26,26 +31,16 @@ const App = () => {
     if (isError) return navigateToHome();
   }, [data?.gameStatus, isError]);
 
-  // useEffect(() => {
-  //   const handleOnLoad = () => {
-  //     playerOnlineEvent();
-  //   };
-  //   const handleBeforeUnload = () => {
-  //     playerOfflineEvent();
-  //   };
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      playerOfflineEvent();
+    };
 
-  //   if (document.readyState === "complete") {
-  //     handleOnLoad();
-  //   } else {
-  //     window.addEventListener("load", handleOnLoad);
-  //   }
-
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //     window.removeEventListener("load", handleOnLoad);
-  //   };
-  // }, [data?.gameStatus]);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [data?.gameStatus]);
 
   if (isLoading) return <div>Loading...</div>;
   return (

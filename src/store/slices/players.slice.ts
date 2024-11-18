@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import {
   AddPlayer,
   PlayersList,
-  // SetOnlineStatus,
+  SetOnlineStatus,
   SetReadyStatus,
 } from "../types/playersSlice.types";
 import { toTitleCase } from "../../utils/toProperCase";
@@ -70,12 +70,12 @@ export const playersSlice = createSlice({
         player.isReady = action?.payload?.status || false;
       }
     },
-    // setOnlineStatus: (state, action: PayloadAction<SetOnlineStatus>) => {
-    //   const player = state.players[action?.payload?.playerId || ""];
-    //   if (Object.keys(player).length) {
-    //     player.isOnline = action?.payload?.status || false;
-    //   }
-    // },
+    setOnlineStatus: (state, action: PayloadAction<SetOnlineStatus>) => {
+      const player = state.players[action?.payload?.playerId || ""];
+      if (Object.keys(player).length) {
+        player.isOnline = action?.payload?.status || false;
+      }
+    },
   },
 });
 
@@ -83,7 +83,7 @@ export const {
   addPlayer,
   setInitalPlayerList,
   setReadyStatus,
-  // setOnlineStatus,
+  setOnlineStatus,
 } = playersSlice.actions;
 
 export default playersSlice.reducer;
