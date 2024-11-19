@@ -76,6 +76,19 @@ export const playersSlice = createSlice({
         player.isOnline = action?.payload?.status || false;
       }
     },
+    removePlayer: (state, action: PayloadAction<string>) => {
+      if (state.players[action?.payload]) {
+        delete state.players[action?.payload];
+      }
+      const index = state.playerList.indexOf(action?.payload);
+      if (index > -1) {
+        state.playerList.splice(index, 1);
+      }
+    },
+    clearPlayerStore: (state) => {
+      state.playerList = [];
+      state.players = {};
+    },
   },
 });
 
@@ -84,6 +97,8 @@ export const {
   setInitalPlayerList,
   setReadyStatus,
   setOnlineStatus,
+  removePlayer,
+  clearPlayerStore,
 } = playersSlice.actions;
 
 export default playersSlice.reducer;

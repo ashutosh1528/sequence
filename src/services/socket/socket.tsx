@@ -5,11 +5,15 @@ import Cookies from "js-cookie";
 import socket from "../socket";
 import {
   addPlayer,
+  clearPlayerStore,
+  removePlayer,
   setOnlineStatus,
   setReadyStatus,
 } from "../../store/slices/players.slice";
 import { useToast } from "../../hooks/useToast";
+import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
+import { clearUserStore } from "../../store/slices/user.slice";
 
 type JoinType = {
   gameId: string;
@@ -21,6 +25,7 @@ interface SocketContextProps {
   joinGameEvent: (data: JoinType) => void;
   playerOfflineEvent: () => void;
   playerOnlineEvent: () => void;
+  playerKickedEvent: (id: string) => void;
 }
 
 const SocketContext = createContext<SocketContextProps | null>(null);
@@ -29,6 +34,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const gameId = Cookies.get(GAME_ID_COOKIE) || "";
   const playerId = Cookies.get(PLAYER_ID_COOKIE) || "";
   const dispatch = useDispatch();
+  const navigateToHome = useNavigateToHome();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -57,7 +63,18 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         })
       );
     });
-  }, [dispatch]);
+    socket.on("playerRemovedEmit", (data) => {
+      const isSelf = playerId === (data?.playerId || "");
+      if (isSelf) {
+        dispatch(clearPlayerStore());
+        dispatch(clearUserStore());
+        socket.disconnect();
+        navigateToHome();
+      } else {
+        dispatch(removePlayer(data?.playerId || ""));
+      }
+    });
+  }, [dispatch, playerId]);
 
   const createGameEvent = ({ gameId, playerId }: JoinType) => {
     if (!socket.connected) {
@@ -108,6 +125,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const playerKickedEvent = (isToKick: string) => {
+    socket.emit("playerRemoved", { playerId: isToKick, gameId });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -115,6 +136,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         joinGameEvent,
         playerOnlineEvent,
         playerOfflineEvent,
+        playerKickedEvent,
       }}
     >
       {children}

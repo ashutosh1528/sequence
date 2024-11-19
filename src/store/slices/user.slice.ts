@@ -36,9 +36,18 @@ export const userSlice = createSlice({
     setPlayerReadyStatus: (state, action: PayloadAction<boolean>) => {
       state.isReady = action?.payload;
     },
+    clearUserStore: (state) => {
+      state.gameId = "";
+      state.playerId = "";
+      state.name = "";
+      state.isAdmin = false;
+      state.isReady = false;
+      state.isOnline = false;
+    },
   },
 });
 
-export const { setInitalUserDetails, setPlayerReadyStatus } = userSlice.actions;
+export const { setInitalUserDetails, setPlayerReadyStatus, clearUserStore } =
+  userSlice.actions;
 
 export default userSlice.reducer;
