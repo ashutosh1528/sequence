@@ -87,15 +87,30 @@ const WaitingPage = () => {
             <PlayerRow playerId={player} key={player} />
           ))}
         </div>
-        <div className="waiting__waitingGameButton">
-          <Button
-            label={readyButtonText}
-            onClick={handleToggleReady}
-            disabled={isGameLocked}
-          />
-          {isPlayerAdmin && (
-            <Button label={lockButtonText} onClick={handleToogleLock} />
-          )}
+        <div className="waiting__container__button">
+          <div>
+            <Button
+              label="Exit game"
+              onClick={handleToggleReady}
+              disabled={isGameLocked}
+              size="small"
+            />
+          </div>
+          <div>
+            <Button
+              label={readyButtonText}
+              onClick={handleToggleReady}
+              disabled={isGameLocked}
+              size="small"
+            />
+            {isPlayerAdmin && (
+              <Button
+                label={lockButtonText}
+                onClick={handleToogleLock}
+                size="small"
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

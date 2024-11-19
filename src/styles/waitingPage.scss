@@ -12,6 +12,10 @@
       padding: 16px 32px;
       gap: 24px;
     }
+    &__button {
+      display: flex;
+      justify-content: space-between;
+    }
   }
   &__title {
     font-size: 108px;
@@ -47,8 +51,5 @@
       font-size: 24px;
       margin-bottom: 16px;
     }
-  }
-  &__waitingGameButton {
-    align-self: flex-end;
   }
 }

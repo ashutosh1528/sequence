@@ -37,7 +37,7 @@ const PlayerRow = ({ playerId }: PlayerRowProps) => {
   // console.log(player.name, " --- ", player.isOnline);
 
   const getNameClass = () => {
-    if (!player.isOnline) return "playerRow__name__offline";
+    if (!player.isOnline) return "--offline";
     return "";
   };
 
@@ -60,7 +60,15 @@ const PlayerRow = ({ playerId }: PlayerRowProps) => {
   if (Object.keys(player).length === 0) return null;
   return (
     <div className="playerRow__container">
-      <div className={getNameClass()}>{player.name}</div>
+      <div style={{ display: "flex" }}>
+        <span className={`playerRow__name${getNameClass()}`}>
+          {player.name}
+        </span>
+        {player.isAdmin && <div className="playerRow__adminChip">Admin</div>}
+        {!player.isOnline && (
+          <div className="playerRow__adminChip">Offline</div>
+        )}
+      </div>
       <div>
         <img className="playerRow__waitingLoader" src={getStatusImage()} />
         {isLoggedInplayerAdmin && (

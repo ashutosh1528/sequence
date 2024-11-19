@@ -26,8 +26,20 @@
     }
   }
   &__name {
-    &__offline {
+    display: flex;
+    &--offline {
+      display: flex;
       opacity: 0.2;
     }
+  }
+  &__adminChip {
+    margin-left: 16px;
+    font-size: 14px;
+    border: 1px solid #eeeaea;
+    border-radius: 16px;
+    background-color: #eeeaea;
+    color: #4a4a4a;
+    padding: 4px 12px;
+    align-self: center;
   }
 }
