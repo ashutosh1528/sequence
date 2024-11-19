@@ -23,6 +23,8 @@ const PlayerRow = ({ playerId }: PlayerRowProps) => {
     (state: RootState) => state.user.isAdmin
   );
   const selfPlayerId = useSelector((state: RootState) => state.user.playerId);
+  const isGameLocked = useSelector((state: RootState) => state.game.isLocked);
+
   const isSelf = useMemo(() => {
     return player.id === selfPlayerId;
   }, [player.id, selfPlayerId]);
@@ -40,7 +42,7 @@ const PlayerRow = ({ playerId }: PlayerRowProps) => {
   };
 
   const handleKickOut = () => {
-    if (!isSelf) {
+    if (!isSelf && !isGameLocked) {
       kickPlayer(
         {
           playerId,

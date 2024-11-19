@@ -1,19 +1,27 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../store";
 import { useToast } from "../hooks/useToast";
 import PlayerRow from "../components/PlayerRow";
 import Button from "../components/Button";
 import useSetPlayerStatus from "../services/useSetPlayerStatus";
+import useLockGame from "../services/useLockGame";
 import { setPlayerReadyStatus } from "../store/slices/user.slice";
+import { setIsLocked } from "../store/slices/game.slice";
 import "../styles/waitingPage.scss";
 
 const WaitingPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const gameId = useSelector((state: RootState) => state.user.gameId);
   const players = useSelector((state: RootState) => state.players.playerList);
   const isPlayerReady = useSelector((state: RootState) => state.user.isReady);
+  const isPlayerAdmin = useSelector((state: RootState) => state.user.isAdmin);
+  const isGameLocked = useSelector((state: RootState) => state.game.isLocked);
+
   const setPlayerStatus = useSetPlayerStatus();
+  const lockGame = useLockGame();
   const toast = useToast();
   const gameLink = `${window.origin}/join/${gameId}`;
 
@@ -22,10 +30,15 @@ const WaitingPage = () => {
     toast?.success("Copied Link");
   };
 
-  const buttonText = useMemo(() => {
+  const readyButtonText = useMemo(() => {
     if (!isPlayerReady) return "Ready !";
-    return "Not Ready :(";
+    return "Not Ready !";
   }, [isPlayerReady]);
+
+  const lockButtonText = useMemo(() => {
+    if (isGameLocked) return "Unlock game";
+    return "Lock game";
+  }, [isGameLocked]);
 
   const handleToggleReady = () => {
     setPlayerStatus(
@@ -36,6 +49,22 @@ const WaitingPage = () => {
         onSuccess: (res) => {
           if (res.data.success) {
             dispatch(setPlayerReadyStatus(!isPlayerReady));
+          }
+        },
+      }
+    );
+  };
+
+  const handleToogleLock = () => {
+    lockGame(
+      {
+        status: !isGameLocked,
+      },
+      {
+        onSuccess: (res) => {
+          if (res.status === 200) {
+            dispatch(setIsLocked(!isGameLocked));
+            navigate("/lock");
           }
         },
       }
@@ -60,10 +89,13 @@ const WaitingPage = () => {
         </div>
         <div className="waiting__waitingGameButton">
           <Button
-            label={buttonText}
+            label={readyButtonText}
             onClick={handleToggleReady}
-            // disabled={playerName.length === 0}
+            disabled={isGameLocked}
           />
+          {isPlayerAdmin && (
+            <Button label={lockButtonText} onClick={handleToogleLock} />
+          )}
         </div>
       </div>
     </div>

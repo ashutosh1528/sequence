@@ -14,6 +14,7 @@ import { useToast } from "../../hooks/useToast";
 import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
 import { clearUserStore } from "../../store/slices/user.slice";
+import { setIsLocked } from "../../store/slices/game.slice";
 
 type JoinType = {
   gameId: string;
@@ -73,6 +74,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       } else {
         dispatch(removePlayer(data?.playerId || ""));
       }
+    });
+    socket.on("gameLockStatus", (data) => {
+      dispatch(setIsLocked(data?.status));
+      navigate("/lock");
     });
   }, [dispatch, playerId]);
 

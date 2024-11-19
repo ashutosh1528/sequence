@@ -15,12 +15,15 @@ const useKickPlayer = () => {
     KickPlayerPayload
   >({
     mutationFn: (payload: KickPlayerPayload) => {
-      return axios.delete(`${API_BASE_URL}/game/kick`, {
-        withCredentials: true,
-        data: {
+      return axios.patch(
+        `${API_BASE_URL}/game/kick`,
+        {
           playerId: payload?.playerId || "",
         },
-      });
+        {
+          withCredentials: true,
+        }
+      );
     },
   });
   return kickPlayer;
