@@ -81,12 +81,17 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
   const playerOfflineEvent = () => {
     if (playerId && gameId) {
-      socket.emit("markPlayerOnlineStatus", {
-        playerId,
-        gameId,
-        status: false,
-      });
-      socket.disconnect();
+      socket.emit(
+        "markPlayerOnlineStatus",
+        {
+          playerId,
+          gameId,
+          status: false,
+        },
+        () => {
+          socket.disconnect();
+        }
+      );
     }
   };
 
