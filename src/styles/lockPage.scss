@@ -1,0 +1,63 @@
+.lock {
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    &__teams {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid;
+      border-radius: 8px;
+      padding: 16px 32px;
+      gap: 24px;
+    }
+    &__team {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+    }
+    &__player {
+      font-size: 20px;
+      border: 1px solid;
+      border-radius: 4px;
+      padding: 8px 16px 8px 8px;
+      min-width: 250px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+    }
+    &__button {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &__title {
+    font-size: 108px;
+    letter-spacing: 5px;
+    &:hover {
+      cursor: default;
+    }
+  }
+  &__titleText {
+    font-size: 32px;
+    align-self: center;
+  }
+  &__teamTitle {
+    margin-bottom: 4px;
+    font-size: 24px;
+  }
+  &__adminChip {
+    margin-left: 8px;
+    font-size: 14px;
+    border: 1px solid #eeeaea;
+    border-radius: 16px;
+    background-color: #eeeaea;
+    color: #4a4a4a;
+    padding: 4px 12px;
+    align-self: center;
+    &:first-of-type {
+      margin-left: 16px;
+    }
+  }
+}

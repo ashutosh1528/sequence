@@ -15,6 +15,7 @@ import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
 import { clearUserStore } from "../../store/slices/user.slice";
 import { setIsLocked } from "../../store/slices/game.slice";
+import { setTeams } from "../../store/slices/teams.slice";
 
 type JoinType = {
   gameId: string;
@@ -78,7 +79,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     });
     socket.on("gameLockStatus", (data) => {
       dispatch(setIsLocked(data?.status));
-      navigate("/lock");
+      if (data?.status === true) navigate("/lock");
+      else if (data?.status === false) navigate("/waiting");
+    });
+    socket.on("teamsCreated", (data) => {
+      dispatch(setTeams(data?.teams || {}));
     });
   }, [dispatch, playerId]);
 
