@@ -77,10 +77,11 @@ export const playersSlice = createSlice({
       }
     },
     removePlayer: (state, action: PayloadAction<string>) => {
-      if (state.players[action?.payload]) {
-        delete state.players[action?.payload];
+      const playerIdToRemove = action?.payload;
+      if (state.players[playerIdToRemove]) {
+        delete state.players[playerIdToRemove];
       }
-      const index = state.playerList.indexOf(action?.payload);
+      const index = state.playerList.indexOf(playerIdToRemove);
       if (index > -1) {
         state.playerList.splice(index, 1);
       }

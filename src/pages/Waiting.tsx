@@ -7,6 +7,8 @@ import PlayerRow from "../components/PlayerRow";
 import Button from "../components/Button";
 import useSetPlayerStatus from "../services/useSetPlayerStatus";
 import useLockGame from "../services/useLockGame";
+import { useSocket } from "../services/socket/socket";
+import useExitGame from "../services/useExitGame";
 import { setPlayerReadyStatus } from "../store/slices/user.slice";
 import { setIsLocked } from "../store/slices/game.slice";
 import "../styles/waitingPage.scss";
@@ -14,6 +16,7 @@ import "../styles/waitingPage.scss";
 const WaitingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { playerExitEvent } = useSocket();
   const gameId = useSelector((state: RootState) => state.user.gameId);
   const players = useSelector((state: RootState) => state.players.playerList);
   const isPlayerReady = useSelector((state: RootState) => state.user.isReady);
@@ -22,6 +25,7 @@ const WaitingPage = () => {
 
   const setPlayerStatus = useSetPlayerStatus();
   const lockGame = useLockGame();
+  const exitGame = useExitGame();
   const toast = useToast();
   const gameLink = `${window.origin}/join/${gameId}`;
 
@@ -71,6 +75,17 @@ const WaitingPage = () => {
     );
   };
 
+  const handleExitGame = () => {
+    exitGame(
+      {},
+      {
+        onSuccess: (res) => {
+          playerExitEvent();
+        },
+      }
+    );
+  };
+
   return (
     <div className="waiting__container">
       <h1 className="waiting__title">Sequence</h1>
@@ -91,7 +106,7 @@ const WaitingPage = () => {
           <div>
             <Button
               label="Exit game"
-              onClick={handleToggleReady}
+              onClick={handleExitGame}
               disabled={isGameLocked}
               size="small"
             />

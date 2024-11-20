@@ -27,6 +27,7 @@ interface SocketContextProps {
   playerOfflineEvent: () => void;
   playerOnlineEvent: () => void;
   playerKickedEvent: (id: string) => void;
+  playerExitEvent: () => void;
 }
 
 const SocketContext = createContext<SocketContextProps | null>(null);
@@ -130,8 +131,12 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const playerKickedEvent = (isToKick: string) => {
-    socket.emit("playerRemoved", { playerId: isToKick, gameId });
+  const playerKickedEvent = (playerIdToKick: string) => {
+    socket.emit("playerRemoved", { playerId: playerIdToKick, gameId });
+  };
+
+  const playerExitEvent = () => {
+    socket.emit("exitGame", { gameId, playerId });
   };
 
   return (
@@ -142,6 +147,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         playerOnlineEvent,
         playerOfflineEvent,
         playerKickedEvent,
+        playerExitEvent,
       }}
     >
       {children}
