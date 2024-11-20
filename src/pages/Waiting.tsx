@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { RootState } from "../store";
 import { useToast } from "../hooks/useToast";
 import PlayerRow from "../components/PlayerRow";
@@ -10,12 +9,10 @@ import useLockGame from "../services/useLockGame";
 import { useSocket } from "../services/socket/socket";
 import useExitGame from "../services/useExitGame";
 import { setPlayerReadyStatus } from "../store/slices/user.slice";
-import { setIsLocked } from "../store/slices/game.slice";
 import "../styles/waitingPage.scss";
 
 const WaitingPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { playerExitEvent } = useSocket();
   const gameId = useSelector((state: RootState) => state.user.gameId);
   const players = useSelector((state: RootState) => state.players.playerList);
@@ -60,19 +57,9 @@ const WaitingPage = () => {
   };
 
   const handleToogleLock = () => {
-    lockGame(
-      {
-        status: !isGameLocked,
-      },
-      {
-        onSuccess: (res) => {
-          if (res.status === 200) {
-            dispatch(setIsLocked(!isGameLocked));
-            navigate("/lock");
-          }
-        },
-      }
-    );
+    lockGame({
+      status: !isGameLocked,
+    });
   };
 
   const handleExitGame = () => {

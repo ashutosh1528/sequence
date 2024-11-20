@@ -34,8 +34,6 @@ const PlayerRow = ({ playerId }: PlayerRowProps) => {
     return WaitingGif;
   };
 
-  // console.log(player.name, " --- ", player.isOnline);
-
   const getNameClass = () => {
     if (!player.isOnline) return "--offline";
     return "";

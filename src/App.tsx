@@ -10,12 +10,14 @@ import PrivateRoute from "./components/PrivateRoute";
 import useGetGameDetails, { GAME_STATUS } from "./services/useGetGameDetails";
 import { useSocket } from "./services/socket/socket";
 import useNavigateToHome from "./hooks/useNavigateToHome";
+import usePopulateRedux from "./hooks/usePopulateRedux";
 
 const App = () => {
   const { playerOnlineEvent, playerOfflineEvent } = useSocket();
   const onlineEventRef = useRef(false);
   const navigate = useNavigate();
   const navigateToHome = useNavigateToHome();
+  const { hydrateRedux } = usePopulateRedux();
   const { data, isLoading, isError } = useGetGameDetails();
 
   useEffect(() => {
@@ -30,6 +32,12 @@ const App = () => {
     if (status === GAME_STATUS.WAITING) return navigate("/waiting");
     if (isError) return navigateToHome();
   }, [data?.gameStatus, isError]);
+
+  useEffect(() => {
+    if (data) {
+      hydrateRedux(data);
+    }
+  }, [JSON.stringify(data)]);
 
   useEffect(() => {
     const handleBeforeUnload = () => {

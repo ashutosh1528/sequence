@@ -14,8 +14,11 @@ export const GameSlice = createSlice({
     setIsLocked: (state, action: PayloadAction<boolean>) => {
       state.isLocked = action?.payload;
     },
+    clearGame: (state) => {
+      state.isLocked = false;
+    },
   },
 });
 
-export const { setIsLocked } = GameSlice.actions;
+export const { setIsLocked, clearGame } = GameSlice.actions;
 export default GameSlice.reducer;

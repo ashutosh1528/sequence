@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import socket from "../socket";
 import {
   addPlayer,
-  clearPlayerStore,
   removePlayer,
   setOnlineStatus,
   setReadyStatus,
@@ -13,9 +12,9 @@ import {
 import { useToast } from "../../hooks/useToast";
 import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
-import { clearUserStore } from "../../store/slices/user.slice";
 import { setIsLocked } from "../../store/slices/game.slice";
-import { setTeams } from "../../store/slices/teams.slice";
+import { clearTeams, setTeams } from "../../store/slices/teams.slice";
+import usePopulateRedux from "../../hooks/usePopulateRedux";
 
 type JoinType = {
   gameId: string;
@@ -39,6 +38,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const dispatch = useDispatch();
   const navigateToHome = useNavigateToHome();
   const navigate = useNavigate();
+  const { clearRedux } = usePopulateRedux();
   const toast = useToast();
 
   useEffect(() => {
@@ -69,8 +69,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     socket.on("playerRemovedEmit", (data) => {
       const isSelf = playerId === (data?.playerId || "");
       if (isSelf) {
-        dispatch(clearPlayerStore());
-        dispatch(clearUserStore());
+        clearRedux();
         socket.disconnect();
         navigateToHome();
       } else {
@@ -78,12 +77,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     socket.on("gameLockStatus", (data) => {
-      dispatch(setIsLocked(data?.status));
-      if (data?.status === true) navigate("/lock");
-      else if (data?.status === false) navigate("/waiting");
-    });
-    socket.on("teamsCreated", (data) => {
-      dispatch(setTeams(data?.teams || {}));
+      dispatch(setIsLocked(data?.lockStatus));
+      if (data?.lockStatus === true) {
+        dispatch(setTeams(data?.teams || {}));
+        navigate("/lock");
+      } else if (data?.lockStatus === false) {
+        dispatch(clearTeams());
+        navigate("/waiting");
+      }
     });
   }, [dispatch, playerId]);
 

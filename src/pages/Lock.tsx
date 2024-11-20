@@ -1,14 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import Button from "../components/Button";
 import useLockGame from "../services/useLockGame";
 import "../styles/lockPage.scss";
-import { setIsLocked } from "../store/slices/game.slice";
 
 const LockPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const lockGame = useLockGame();
   const teams = useSelector((state: RootState) => state.teams.teams);
   const players = useSelector((state: RootState) => state.players.players);
@@ -18,19 +14,9 @@ const LockPage = () => {
   );
 
   const handleToogleLock = () => {
-    lockGame(
-      {
-        status: false,
-      },
-      {
-        onSuccess: (res) => {
-          if (res.status === 200) {
-            dispatch(setIsLocked(false));
-            navigate("/waiting");
-          }
-        },
-      }
-    );
+    lockGame({
+      status: false,
+    });
   };
 
   return (

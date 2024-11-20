@@ -27,13 +27,15 @@ export const teamSlice = createSlice({
         if (color === "BLUE") return COLORS.BLUE;
         return COLORS.RED;
       };
-      state.teams = {};
       Object.values(action?.payload).forEach((team) => {
         state.teams[team?.id] = { ...team, color: getColor(team.color) };
       });
     },
+    clearTeams: (state) => {
+      state.teams = {};
+    },
   },
 });
 
-export const { setTeams } = teamSlice.actions;
+export const { setTeams, clearTeams } = teamSlice.actions;
 export default teamSlice.reducer;
