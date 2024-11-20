@@ -19,6 +19,11 @@ const LockPage = () => {
     });
   };
 
+  const getPlayerNameClassName = (playerId: string) => {
+    if (players[playerId].isOnline) return "lock__playerName";
+    return "lock__playerName--offline";
+  };
+
   return (
     <div className="lock__container">
       <h1 className="lock__title">Sequence</h1>
@@ -35,12 +40,17 @@ const LockPage = () => {
                       className="lock__container__player"
                       key={players[player].id}
                     >
-                      {players[player].name}
+                      <span className={getPlayerNameClassName(player)}>
+                        {players[player].name}
+                      </span>
                       {players[player].id === selfPlayerId && (
                         <div className="lock__adminChip">You</div>
                       )}
                       {players[player].isAdmin && (
                         <div className="lock__adminChip">Admin</div>
+                      )}
+                      {!players[player].isOnline && (
+                        <div className="playerRow__adminChip">Offline</div>
                       )}
                     </div>
                   );

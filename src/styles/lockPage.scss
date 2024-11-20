@@ -60,4 +60,9 @@
       margin-left: 16px;
     }
   }
+  &__playerName {
+    &--offline {
+      opacity: 0.1;
+    }
+  }
 }
