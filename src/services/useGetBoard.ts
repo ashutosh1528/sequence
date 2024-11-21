@@ -3,15 +3,11 @@ import Cookies from "js-cookie";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../constants";
 import axios from "axios";
 import { API_BASE_URL } from "./constants";
+import { BoardCellType } from "../types/BoardCell.type";
 
-export type Cell = {
-  id: string;
-  face: string;
-  teamId: string;
-};
 type GetBoardResponse = {
   isSuccess: boolean;
-  board: Cell[][];
+  board: BoardCellType[][];
 };
 const useGetBoard = () => {
   const gameId = Cookies.get(GAME_ID_COOKIE) || "";
@@ -29,6 +25,14 @@ const useGetBoard = () => {
       return axios
         .get(`${API_BASE_URL}/game/getBoard`, { withCredentials: true })
         .then((res) => res.data);
+    },
+    select: (data) => {
+      data.board.map((row) => {
+        row.map((cell) => {
+          return { ...cell, isHighlighted: false } as BoardCellType;
+        });
+      });
+      return data;
     },
   });
 };

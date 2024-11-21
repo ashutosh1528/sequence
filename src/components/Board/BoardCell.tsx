@@ -16,7 +16,15 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
     console.log(x, y);
   };
   return (
-    <div onClick={handleCellClick}>
+    <div
+      onClick={handleCellClick}
+      className="board__container__cell"
+      style={{
+        border: `${
+          boardCell.isHighlighted ? "2px solid #3efb01" : "4px solid white"
+        }`,
+      }}
+    >
       <CardIcon name={boardCell.face} width={50} />
     </div>
   );

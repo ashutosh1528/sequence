@@ -2,15 +2,14 @@
   &__container {
     display: grid;
     grid-template-columns: repeat(10, auto);
-    gap: 5px;
     justify-content: start;
     align-items: start;
 
     &__cell {
-      // display: inline-block;
-      // transform-origin: center;
-      // transform: rotate(90deg);
-      // text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
     }
   }
 }

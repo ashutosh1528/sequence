@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import BoardCell from "./BoardCell";
-import useGetBoard, { Cell } from "../../services/useGetBoard";
+import useGetBoard from "../../services/useGetBoard";
 import { setBoard } from "../../store/slices/game.slice";
+import { BoardCellType } from "../../types/BoardCell.type";
 import "./index.scss";
 
 const Board = () => {
   const dispatch = useDispatch();
-  const [staticBoard, setStaticBoard] = useState<Cell[][]>([]);
+  const [staticBoard, setStaticBoard] = useState<BoardCellType[][]>([]);
   const { data, isSuccess } = useGetBoard();
 
   useEffect(() => {
