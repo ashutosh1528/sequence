@@ -2,10 +2,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import Button from "../components/Button";
 import useLockGame from "../services/useLockGame";
+import useStartGame from "../services/useStartGame";
 import "../styles/lockPage.scss";
 
 const LockPage = () => {
   const lockGame = useLockGame();
+  const startGame = useStartGame();
   const teams = useSelector((state: RootState) => state.teams.teams);
   const players = useSelector((state: RootState) => state.players.players);
   const selfPlayerId = useSelector((state: RootState) => state.user.playerId);
@@ -22,6 +24,10 @@ const LockPage = () => {
   const getPlayerNameClassName = (playerId: string) => {
     if (players[playerId].isOnline) return "lock__playerName";
     return "lock__playerName--offline";
+  };
+
+  const handleStartGame = () => {
+    startGame({});
   };
 
   return (
@@ -69,7 +75,7 @@ const LockPage = () => {
             <Button
               label="Start game !"
               size="small"
-              // onClick={}
+              onClick={handleStartGame}
             />
           </div>
         )}

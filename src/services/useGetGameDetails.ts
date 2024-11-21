@@ -39,7 +39,7 @@ const useGetGameDetails = () => {
   const playerId = Cookies.get(PLAYER_ID_COOKIE) || "";
 
   return useQuery<GetGameDetailsResponse>({
-    queryKey: [gameId, playerId],
+    queryKey: ["getGame", gameId, playerId],
     enabled: !!gameId && !!playerId,
     retry: 0,
     gcTime: Infinity,

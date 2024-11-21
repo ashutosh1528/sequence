@@ -12,7 +12,7 @@ import {
 import { useToast } from "../../hooks/useToast";
 import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
-import { setIsLocked } from "../../store/slices/game.slice";
+import { setIsLocked, setIsStarted } from "../../store/slices/game.slice";
 import { clearTeams, setTeams } from "../../store/slices/teams.slice";
 import usePopulateRedux from "../../hooks/usePopulateRedux";
 
@@ -84,6 +84,12 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       } else if (data?.lockStatus === false) {
         dispatch(clearTeams());
         navigate("/waiting");
+      }
+    });
+    socket.on("gameStarted", (data) => {
+      if (data?.isStarted === true) {
+        dispatch(setIsStarted(true));
+        navigate("/game");
       }
     });
   }, [dispatch, playerId]);
