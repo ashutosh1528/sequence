@@ -1,0 +1,11 @@
+.hand {
+  &__container {
+    display: flex;
+    margin-left: 160px;
+    align-self: flex-end;
+  }
+  &__card {
+    transform-origin: 50% 180%;
+    margin-left: -70px;
+  }
+}

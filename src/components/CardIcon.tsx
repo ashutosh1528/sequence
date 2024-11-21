@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const CardIcon = ({ name }: { name: string }) => {
+const CardIcon = ({ name, width = 50 }: { name: string; width: number }) => {
   const IconRef = useRef<any>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,7 @@ const CardIcon = ({ name }: { name: string }) => {
 
   if (!loading && IconRef.current) {
     const { current: ImportedIcon } = IconRef;
-    return <img src={ImportedIcon} width={50} />;
+    return <img src={ImportedIcon} width={width} />;
   }
 
   return null;

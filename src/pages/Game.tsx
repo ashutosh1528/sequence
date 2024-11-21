@@ -1,16 +1,16 @@
 import Board from "../components/Board";
-import CardIcon from "../components/CardIcon";
-import useGetCards from "../services/useGetCards";
+import Hand from "../components/Hand";
+import "../styles/gamePage.scss";
 
 const GamePage = () => {
-  const { data } = useGetCards();
-  console.log(data);
   return (
-    <div>
-      {/* {data?.cards.map((card) => (
-          <CardIcon name={card} />
-        ))} */}
-      <Board />
+    <div className="game__container">
+      <div className="game__container__board">
+        <Board />
+      </div>
+      <div className="game__container__panel">
+        <Hand />
+      </div>
     </div>
   );
 };

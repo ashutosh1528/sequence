@@ -1,0 +1,13 @@
+.game {
+  &__container {
+    display: flex;
+    &__board {
+      display: flex;
+    }
+    &__panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+}

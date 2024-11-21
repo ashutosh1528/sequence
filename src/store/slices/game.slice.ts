@@ -1,13 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Cell } from "../../services/useGetBoard";
 
 export interface GameSliceState {
   isLocked: boolean;
   isStarted: boolean;
+  board: Cell[][] | [];
 }
 
-const initialState = {
+const initialState: GameSliceState = {
   isLocked: false,
   isStarted: false,
+  board: [],
 };
 export const GameSlice = createSlice({
   name: "game",
@@ -19,11 +22,15 @@ export const GameSlice = createSlice({
     setIsStarted: (state, action: PayloadAction<boolean>) => {
       state.isStarted = action?.payload || false;
     },
+    setBoard: (state, action: PayloadAction<Cell[][]>) => {
+      state.board = action?.payload;
+    },
     clearGame: (state) => {
       state.isLocked = false;
     },
   },
 });
 
-export const { setIsLocked, clearGame, setIsStarted } = GameSlice.actions;
+export const { setIsLocked, clearGame, setIsStarted, setBoard } =
+  GameSlice.actions;
 export default GameSlice.reducer;
