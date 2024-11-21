@@ -23,7 +23,7 @@ const CardIcon = ({ name }: { name: string }) => {
 
   if (!loading && IconRef.current) {
     const { current: ImportedIcon } = IconRef;
-    return <img src={ImportedIcon} width={200} />;
+    return <img src={ImportedIcon} width={50} />;
   }
 
   return null;
