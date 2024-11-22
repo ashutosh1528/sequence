@@ -49,22 +49,25 @@ const Hand = () => {
   };
 
   return (
-    <div className="hand__container">
-      {data?.cards?.map((card, idx) => {
-        const angle = -20 + idx * 10;
-        return (
-          <div
-            style={{ transform: `rotate(${angle}deg)` }}
-            className="hand__card"
-            onClick={handleOnCardClick}
-            data-cardface={card}
-            id={`${card}-inhand`}
-            key={`${card}-${idx}`}
-          >
-            <CardIcon name={card} width={80} />
-          </div>
-        );
-      })}
+    <div className="hand">
+      <div className="hand__container">
+        {data?.cards?.map((card, idx) => {
+          const angle = -20 + idx * 10;
+          return (
+            <div
+              style={{ transform: `rotate(${angle}deg)` }}
+              className="hand__card"
+              onClick={handleOnCardClick}
+              data-cardface={card}
+              id={`${card}-inhand`}
+              key={`${card}-${idx}`}
+            >
+              <CardIcon name={card} width={120} />
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ fontSize: 20 }}>Your cards</div>
     </div>
   );
 };

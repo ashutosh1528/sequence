@@ -1,12 +1,17 @@
 .hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
   &__container {
     display: flex;
-    margin-left: 160px;
-    align-self: flex-end;
+    margin-left: 100px;
+    align-self: center;
   }
   &__card {
-    transform-origin: 50% 180%;
-    margin-left: -70px;
+    transform-origin: 50% 250%;
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: -120px;
     &:hover {
       cursor: pointer;
     }
