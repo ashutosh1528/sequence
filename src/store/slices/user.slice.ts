@@ -10,6 +10,7 @@ export interface UserState {
   isAdmin: boolean;
   isReady: boolean;
   isOnline: boolean;
+  cardToPlay: string;
 }
 
 const initialState: UserState = {
@@ -19,6 +20,7 @@ const initialState: UserState = {
   isAdmin: false,
   isReady: false,
   isOnline: false,
+  cardToPlay: "",
 };
 
 export const userSlice = createSlice({
@@ -32,9 +34,13 @@ export const userSlice = createSlice({
       state.isAdmin = action?.payload?.isAdmin || false;
       state.isReady = action?.payload?.isReady || false;
       state.isOnline = action?.payload?.isOnline || false;
+      state.cardToPlay = "";
     },
     setPlayerReadyStatus: (state, action: PayloadAction<boolean>) => {
       state.isReady = action?.payload;
+    },
+    setCardToPlay: (state, action: PayloadAction<string>) => {
+      state.cardToPlay = action?.payload || "";
     },
     clearUserStore: (state) => {
       state.gameId = "";
@@ -43,11 +49,16 @@ export const userSlice = createSlice({
       state.isAdmin = false;
       state.isReady = false;
       state.isOnline = false;
+      state.cardToPlay = "";
     },
   },
 });
 
-export const { setInitalUserDetails, setPlayerReadyStatus, clearUserStore } =
-  userSlice.actions;
+export const {
+  setInitalUserDetails,
+  setPlayerReadyStatus,
+  clearUserStore,
+  setCardToPlay,
+} = userSlice.actions;
 
 export default userSlice.reducer;

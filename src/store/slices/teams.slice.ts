@@ -10,10 +10,14 @@ export interface TeamState {
       color: COLORS;
     };
   };
+  score: Record<string, number>;
+  teamColorMapper: Record<string, COLORS>;
 }
 
 const initialState: TeamState = {
   teams: {},
+  score: {},
+  teamColorMapper: {},
 };
 
 export const teamSlice = createSlice({
@@ -29,6 +33,8 @@ export const teamSlice = createSlice({
       };
       Object.values(action?.payload).forEach((team) => {
         state.teams[team?.id] = { ...team, color: getColor(team.color) };
+        state.score[team?.id] = team.score;
+        state.teamColorMapper[team?.id] = getColor(team.color);
       });
     },
     clearTeams: (state) => {

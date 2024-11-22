@@ -12,7 +12,11 @@ import {
 import { useToast } from "../../hooks/useToast";
 import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
-import { setIsLocked, setIsStarted } from "../../store/slices/game.slice";
+import {
+  placeCoin,
+  setIsLocked,
+  setIsStarted,
+} from "../../store/slices/game.slice";
 import { clearTeams, setTeams } from "../../store/slices/teams.slice";
 import usePopulateRedux from "../../hooks/usePopulateRedux";
 
@@ -91,6 +95,9 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         dispatch(setIsStarted(true));
         navigate("/game");
       }
+    });
+    socket.on("coinPlaced", (data) => {
+      dispatch(placeCoin(data));
     });
   }, [dispatch, playerId]);
 

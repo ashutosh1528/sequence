@@ -40,7 +40,7 @@ export const GameSlice = createSlice({
     },
     setBoardCellsToHighlight: (state, action: PayloadAction<string>) => {
       state.boardCellsToHighlight = [];
-      if (action?.payload) {
+      if (action?.payload && !action?.payload.includes("J")) {
         const cellsForFace = state.faceCellIdMapper[action?.payload];
         cellsForFace.forEach((cell) => {
           const [x, y] = cell.split(".");
@@ -50,13 +50,32 @@ export const GameSlice = createSlice({
     },
     setBoardCellsToUnhighlight: (state, action: PayloadAction<string>) => {
       state.boardCellsToHighlight = [];
-      if (action?.payload) {
+      if (action?.payload && !action?.payload.includes("J")) {
         const cellsForFace = state.faceCellIdMapper[action?.payload];
         cellsForFace.forEach((cell) => {
           const [x, y] = cell.split(".");
           state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = false;
         });
       }
+    },
+    placeCoin: (
+      state,
+      action: PayloadAction<{
+        cellId: string;
+        teamId: string;
+        cardFace: string;
+      }>
+    ) => {
+      const { cellId, teamId, cardFace } = action?.payload || {};
+      const parts = cellId.split(".");
+      const [x, y] = [parseInt(parts[0], 10), parseInt(parts[1], 10)];
+      state.board[x][y].teamId = teamId;
+
+      const cellsForFace = state.faceCellIdMapper[cardFace];
+      cellsForFace.forEach((cell) => {
+        const [x, y] = cell.split(".");
+        state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = false;
+      });
     },
     clearGame: (state) => {
       state.isLocked = false;
@@ -71,5 +90,6 @@ export const {
   setBoard,
   setBoardCellsToHighlight,
   setBoardCellsToUnhighlight,
+  placeCoin,
 } = GameSlice.actions;
 export default GameSlice.reducer;

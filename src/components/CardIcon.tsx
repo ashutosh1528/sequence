@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const CardIcon = ({ name, width = 50 }: { name: string; width: number }) => {
-  const IconRef = useRef<any>(null);
+  const [icon, setIcon] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const CardIcon = ({ name, width = 50 }: { name: string; width: number }) => {
         const { default: namedImport } = await import(
           `../assets/cards/${name}.svg`
         );
-        IconRef.current = namedImport;
+        setIcon(namedImport);
       } catch (err) {
         throw err;
       } finally {
@@ -21,9 +21,8 @@ const CardIcon = ({ name, width = 50 }: { name: string; width: number }) => {
     importIcon();
   }, [name]);
 
-  if (!loading && IconRef.current) {
-    const { current: ImportedIcon } = IconRef;
-    return <img src={ImportedIcon} width={width} />;
+  if (!loading && icon) {
+    return <img src={icon} width={width} />;
   }
 
   return null;

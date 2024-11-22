@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetCards from "../../services/useGetCards";
 import CardIcon from "../CardIcon";
 import "./index.scss";
@@ -7,11 +7,16 @@ import {
   setBoardCellsToHighlight,
   setBoardCellsToUnhighlight,
 } from "../../store/slices/game.slice";
+import { setCardToPlay } from "../../store/slices/user.slice";
 
 const Hand = () => {
   const dispatch = useDispatch();
-  const { data } = useGetCards();
+  const { data, isFetching } = useGetCards();
   const [selectedCard, setSelectedCard] = useState("");
+
+  useEffect(() => {
+    setSelectedCard("");
+  }, [isFetching]);
 
   const raiseHand = (card: string) => {
     if (card) {
@@ -19,7 +24,7 @@ const Hand = () => {
         `${card}-inhand`
       ) as HTMLDivElement;
       let transformValue = cardDiv.style.getPropertyValue("transform");
-      transformValue = `${transformValue} translateY(-25px)`;
+      transformValue = `${transformValue} translateY(-40px)`;
       cardDiv.style.setProperty("transform", transformValue);
       dispatch(setBoardCellsToHighlight(card || ""));
     }
@@ -43,8 +48,10 @@ const Hand = () => {
     lowerHand(selectedCard || "");
     if (card === selectedCard) {
       setSelectedCard("");
+      dispatch(setCardToPlay(""));
     } else {
       setSelectedCard(card || "");
+      dispatch(setCardToPlay(card || ""));
     }
   };
 
