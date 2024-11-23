@@ -7,7 +7,7 @@ const Deck = () => {
   const queryClient = useQueryClient();
   const getNewCard = useGetNewCard();
 
-  const array = Array.from({ length: 5 });
+  const array = Array.from({ length: 10 });
 
   const handleDeckClick = () => {
     getNewCard(
@@ -39,6 +39,7 @@ const Deck = () => {
           />
         ))}
       </div>
+      <div className="deck__title">Deck</div>
     </div>
   );
 };
