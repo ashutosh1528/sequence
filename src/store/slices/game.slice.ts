@@ -1,9 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BoardCellType } from "../../types/BoardCell.type";
+import { SetInitialGameDetailsType } from "../types/gameSlice.types";
 
 export interface GameSliceState {
   isLocked: boolean;
   isStarted: boolean;
+  isCoinPlacedInTurn: boolean;
   board: BoardCellType[][];
   faceCellIdMapper: Record<string, string[]>;
   boardCellsToHighlight: string[];
@@ -15,11 +17,20 @@ const initialState: GameSliceState = {
   board: [[]],
   faceCellIdMapper: {},
   boardCellsToHighlight: [],
+  isCoinPlacedInTurn: false,
 };
 export const GameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    setInitalGameDetails: (
+      state,
+      action: PayloadAction<SetInitialGameDetailsType>
+    ) => {
+      state.isCoinPlacedInTurn = action?.payload?.isCoinPlacedInTurn;
+      state.isLocked = action?.payload?.isLocked;
+      state.isStarted = action?.payload?.isStarted;
+    },
     setIsLocked: (state, action: PayloadAction<boolean>) => {
       state.isLocked = action?.payload || false;
     },
@@ -58,6 +69,9 @@ export const GameSlice = createSlice({
         });
       }
     },
+    setIsCoinPlacedInTurn: (state, action: PayloadAction<boolean>) => {
+      state.isCoinPlacedInTurn = action?.payload;
+    },
     placeCoin: (
       state,
       action: PayloadAction<{
@@ -91,5 +105,7 @@ export const {
   setBoardCellsToHighlight,
   setBoardCellsToUnhighlight,
   placeCoin,
+  setIsCoinPlacedInTurn,
+  setInitalGameDetails,
 } = GameSlice.actions;
 export default GameSlice.reducer;

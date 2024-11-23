@@ -1,4 +1,5 @@
 import Board from "../components/Board";
+import Deck from "../components/Deck";
 import Hand from "../components/Hand";
 import "../styles/gamePage.scss";
 
@@ -9,6 +10,8 @@ const GamePage = () => {
         <Board />
       </div>
       <div className="game__container__panel">
+        <div className="game__title">Sequence</div>
+        <Deck />
         <Hand />
       </div>
     </div>

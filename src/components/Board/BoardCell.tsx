@@ -1,8 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 import CardIcon from "../CardIcon";
-import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { setIsCoinPlacedInTurn } from "../../store/slices/game.slice";
 import usePlayerMove from "../../services/usePlayerMove";
 import RedCoin from "../../assets/coins/redCoin.svg";
 import BlueCoin from "../../assets/coins/blueCoin.svg";
@@ -10,9 +11,12 @@ import GreenCoin from "../../assets/coins/greenCoin.svg";
 import { COLORS } from "../../store/types/teamSlice.types";
 
 const BoardCell = ({ cellId }: { cellId: string }) => {
-  const playerMove = usePlayerMove();
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const playerMove = usePlayerMove();
+
   const [isHovered, setIsHovered] = useState(false);
+
   const [x, y] = useMemo(() => {
     const [x, y] = cellId.split(".");
     return [parseInt(x, 10), parseInt(y, 10)];
@@ -23,9 +27,12 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
   const teamColorMapper = useSelector(
     (state: RootState) => state.teams.teamColorMapper
   );
+  const isCoinPlacedInTurn = useSelector(
+    (state: RootState) => state.game.isCoinPlacedInTurn
+  );
 
   const handleCellClick = () => {
-    if (boardCell.isHighlighted && !boardCell.teamId) {
+    if (boardCell.isHighlighted && !boardCell.teamId && !isCoinPlacedInTurn) {
       playerMove(
         { cardFace: cardToPlay, cellId },
         {
@@ -35,6 +42,7 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
                 queryKey: ["getCards"],
                 exact: false,
               });
+              dispatch(setIsCoinPlacedInTurn(true));
             }
           },
         }

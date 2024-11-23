@@ -9,7 +9,7 @@ import {
 } from "../store/slices/user.slice";
 import { clearTeams, setTeams } from "../store/slices/teams.slice";
 import { GetGameDetailsResponse } from "../services/useGetGameDetails";
-import { clearGame, setIsLocked } from "../store/slices/game.slice";
+import { clearGame, setInitalGameDetails } from "../store/slices/game.slice";
 
 const usePopulateRedux = () => {
   const dispatch = useDispatch();
@@ -26,8 +26,8 @@ const usePopulateRedux = () => {
         isOnline: data?.players[data?.playerId].isOnline,
       })
     );
+    dispatch(setInitalGameDetails(data));
     dispatch(setTeams(data.teams));
-    dispatch(setIsLocked(data.isLocked));
   };
 
   const clearRedux = () => {

@@ -2,17 +2,21 @@ import { useEffect, useState } from "react";
 import useGetCards from "../../services/useGetCards";
 import CardIcon from "../CardIcon";
 import "./index.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setBoardCellsToHighlight,
   setBoardCellsToUnhighlight,
 } from "../../store/slices/game.slice";
 import { setCardToPlay } from "../../store/slices/user.slice";
+import { RootState } from "../../store";
 
 const Hand = () => {
   const dispatch = useDispatch();
   const { data, isFetching } = useGetCards();
   const [selectedCard, setSelectedCard] = useState("");
+  const isCoinPlacedInTurn = useSelector(
+    (state: RootState) => state.game.isCoinPlacedInTurn
+  );
 
   useEffect(() => {
     setSelectedCard("");
@@ -43,15 +47,17 @@ const Hand = () => {
   };
 
   const handleOnCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const card = event.currentTarget.dataset.cardface;
-    raiseHand(card || "");
-    lowerHand(selectedCard || "");
-    if (card === selectedCard) {
-      setSelectedCard("");
-      dispatch(setCardToPlay(""));
-    } else {
-      setSelectedCard(card || "");
-      dispatch(setCardToPlay(card || ""));
+    if (!isCoinPlacedInTurn) {
+      const card = event.currentTarget.dataset.cardface;
+      raiseHand(card || "");
+      lowerHand(selectedCard || "");
+      if (card === selectedCard) {
+        setSelectedCard("");
+        dispatch(setCardToPlay(""));
+      } else {
+        setSelectedCard(card || "");
+        dispatch(setCardToPlay(card || ""));
+      }
     }
   };
 
