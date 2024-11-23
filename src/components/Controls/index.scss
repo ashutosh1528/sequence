@@ -1,0 +1,9 @@
+.controls {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    flex-grow: 10;
+  }
+}
