@@ -14,6 +14,8 @@ import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
 import {
   placeCoin,
+  setIsCardPicked,
+  setIsCoinPlacedInTurn,
   setIsLocked,
   setIsStarted,
   setPlayerTurnIndex,
@@ -104,6 +106,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     });
     socket.on("coinPlaced", (data) => {
       dispatch(placeCoin(data));
+    });
+    socket.on("nextTurn", (data) => {
+      dispatch(setPlayerTurnIndex(data?.nextTurnIndex));
+      dispatch(setIsCoinPlacedInTurn(false));
+      dispatch(setIsCardPicked(false));
     });
   }, [dispatch, playerId]);
 
