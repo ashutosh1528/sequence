@@ -10,11 +10,15 @@
     align-self: center;
   }
   &__card {
-    transform-origin: 50% 250%;
-    transition: margin-left 0.3s ease-in-out;
+    transform-origin: 25% 100%;
+    transition: transform-origin 0.3s linear;
     margin-left: -120px;
     &:hover {
       cursor: pointer;
+    }
+    &--turn {
+      @extend .hand__card;
+      transform-origin: 50% 250%;
     }
   }
 }

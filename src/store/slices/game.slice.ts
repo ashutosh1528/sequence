@@ -9,6 +9,9 @@ export interface GameSliceState {
   board: BoardCellType[][];
   faceCellIdMapper: Record<string, string[]>;
   boardCellsToHighlight: string[];
+  playerTurnSequence: string[];
+  playerTurnIndex: number;
+  playerTurnId: string;
 }
 
 const initialState: GameSliceState = {
@@ -18,6 +21,9 @@ const initialState: GameSliceState = {
   faceCellIdMapper: {},
   boardCellsToHighlight: [],
   isCoinPlacedInTurn: false,
+  playerTurnSequence: [],
+  playerTurnIndex: 0,
+  playerTurnId: "",
 };
 export const GameSlice = createSlice({
   name: "game",
@@ -30,12 +36,27 @@ export const GameSlice = createSlice({
       state.isCoinPlacedInTurn = action?.payload?.isCoinPlacedInTurn;
       state.isLocked = action?.payload?.isLocked;
       state.isStarted = action?.payload?.isStarted;
+      state.playerTurnIndex = action?.payload?.playerTurnIndex;
+      state.playerTurnSequence = action?.payload?.playerTurnSequence;
+      if (action?.payload?.playerTurnSequence.length) {
+        state.playerTurnId =
+          action?.payload?.playerTurnSequence[action?.payload?.playerTurnIndex];
+      }
     },
     setIsLocked: (state, action: PayloadAction<boolean>) => {
       state.isLocked = action?.payload || false;
     },
     setIsStarted: (state, action: PayloadAction<boolean>) => {
       state.isStarted = action?.payload || false;
+    },
+    setPlayerTurnSequence: (state, action: PayloadAction<string[]>) => {
+      state.playerTurnSequence = action?.payload;
+    },
+    setPlayerTurnIndex: (state, action: PayloadAction<number>) => {
+      state.playerTurnIndex = action?.payload;
+      if (state.playerTurnSequence.length) {
+        state.playerTurnId = state.playerTurnSequence[action?.payload];
+      }
     },
     setBoard: (state, action: PayloadAction<BoardCellType[][]>) => {
       state.board = action?.payload;
@@ -107,5 +128,7 @@ export const {
   placeCoin,
   setIsCoinPlacedInTurn,
   setInitalGameDetails,
+  setPlayerTurnSequence,
+  setPlayerTurnIndex,
 } = GameSlice.actions;
 export default GameSlice.reducer;

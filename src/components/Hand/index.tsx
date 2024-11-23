@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useGetCards from "../../services/useGetCards";
 import CardIcon from "../CardIcon";
 import "./index.scss";
@@ -17,6 +17,19 @@ const Hand = () => {
   const isCoinPlacedInTurn = useSelector(
     (state: RootState) => state.game.isCoinPlacedInTurn
   );
+  const selfPlayerId = useSelector((state: RootState) => state.user.playerId);
+  const currentTurnPlayerId = useSelector(
+    (state: RootState) => state.game.playerTurnId
+  );
+  const [isMyTurn, setIsMyTurn] = useState(
+    selfPlayerId === currentTurnPlayerId
+  );
+
+  useEffect(() => {
+    if (selfPlayerId !== "") {
+      setIsMyTurn(selfPlayerId === currentTurnPlayerId);
+    }
+  }, [selfPlayerId, currentTurnPlayerId]);
 
   useEffect(() => {
     setSelectedCard("");
@@ -47,7 +60,7 @@ const Hand = () => {
   };
 
   const handleOnCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!isCoinPlacedInTurn) {
+    if (!isCoinPlacedInTurn && isMyTurn) {
       const card = event.currentTarget.dataset.cardface;
       raiseHand(card || "");
       lowerHand(selectedCard || "");
@@ -69,7 +82,7 @@ const Hand = () => {
           return (
             <div
               style={{ transform: `rotate(${angle}deg)` }}
-              className="hand__card"
+              className={`hand__card${isMyTurn ? "--turn" : ""}`}
               onClick={handleOnCardClick}
               data-cardface={card}
               id={`${card}-inhand`}

@@ -16,6 +16,8 @@ import {
   placeCoin,
   setIsLocked,
   setIsStarted,
+  setPlayerTurnIndex,
+  setPlayerTurnSequence,
 } from "../../store/slices/game.slice";
 import { clearTeams, setTeams } from "../../store/slices/teams.slice";
 import usePopulateRedux from "../../hooks/usePopulateRedux";
@@ -84,8 +86,12 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       dispatch(setIsLocked(data?.lockStatus));
       if (data?.lockStatus === true) {
         dispatch(setTeams(data?.teams || {}));
+        dispatch(setPlayerTurnSequence(data?.playerTurnSequence || []));
+        dispatch(setPlayerTurnIndex(data?.playerTurnIndex || 0));
         navigate("/lock");
       } else if (data?.lockStatus === false) {
+        dispatch(setPlayerTurnSequence([]));
+        dispatch(setPlayerTurnIndex(0));
         dispatch(clearTeams());
         navigate("/waiting");
       }

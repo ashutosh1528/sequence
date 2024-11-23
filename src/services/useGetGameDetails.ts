@@ -33,6 +33,8 @@ export type GetGameDetailsResponse = {
   players: Record<string, PlayerDetails>;
   gameStatus: GAME_STATUS;
   teams: Record<string, TeamDetails>;
+  playerTurnSequence: string[];
+  playerTurnIndex: number;
 };
 
 const useGetGameDetails = () => {
