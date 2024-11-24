@@ -109,11 +109,13 @@ export const GameSlice = createSlice({
       const [x, y] = [parseInt(parts[0], 10), parseInt(parts[1], 10)];
       state.board[x][y].teamId = teamId;
 
-      const cellsForFace = state.faceCellIdMapper[cardFace];
-      cellsForFace.forEach((cell) => {
-        const [x, y] = cell.split(".");
-        state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = false;
-      });
+      if (!cardFace.includes("J")) {
+        const cellsForFace = state.faceCellIdMapper[cardFace];
+        cellsForFace.forEach((cell) => {
+          const [x, y] = cell.split(".");
+          state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = false;
+        });
+      }
     },
     setIsCardPicked: (state, action: PayloadAction<boolean>) => {
       state.isCardPickedInTurn = action?.payload;

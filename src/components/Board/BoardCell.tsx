@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 import CardIcon from "../CardIcon";
@@ -31,8 +31,32 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
     (state: RootState) => state.game.isCoinPlacedInTurn
   );
 
+  const [wildCardInfo, setWildCardInfo] = useState<
+    "" | "PLAY_WILDCARD" | "REMOVE_WILDCARD"
+  >("");
+
+  const getWildCardInfo = () => {
+    if (!cardToPlay.includes("J")) return "";
+    const TWO_EYED_JACKS_SUITS = ["D", "C"];
+    const cardFaceSuit = cardToPlay?.[1] || "";
+    if (!cardFaceSuit) return "";
+    if (TWO_EYED_JACKS_SUITS.includes(cardFaceSuit)) return "PLAY_WILDCARD";
+    return "REMOVE_WILDCARD";
+  };
+
+  useEffect(() => {
+    setWildCardInfo(getWildCardInfo());
+  }, [cardToPlay]);
+
   const handleCellClick = () => {
-    if (boardCell.isHighlighted && !boardCell.teamId && !isCoinPlacedInTurn) {
+    const canPlay =
+      ((boardCell.isHighlighted || wildCardInfo === "PLAY_WILDCARD") &&
+        !boardCell.teamId &&
+        !isCoinPlacedInTurn) ||
+      (wildCardInfo === "REMOVE_WILDCARD" &&
+        boardCell.teamId &&
+        !isCoinPlacedInTurn);
+    if (canPlay) {
       playerMove(
         { cardFace: cardToPlay, cellId },
         {
@@ -51,7 +75,11 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
   };
 
   const onMouseEnter = () => {
-    if (boardCell.isHighlighted && !boardCell.teamId) {
+    if (wildCardInfo === "PLAY_WILDCARD") {
+      setIsHovered(true);
+    } else if (wildCardInfo === "REMOVE_WILDCARD" && boardCell.teamId) {
+      setIsHovered(true);
+    } else if (boardCell.isHighlighted && !boardCell.teamId) {
       setIsHovered(true);
     }
   };
