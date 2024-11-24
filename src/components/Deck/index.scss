@@ -1,14 +1,17 @@
 .deck {
   &__container {
     margin: 16px;
-    padding: 16px;
-    position: relative;
+    padding-bottom: 8px;
     align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid;
+    border-radius: 8px;
     &__pile {
-      position: absolute;
+      position: relative;
       width: 140px;
-      height: 200px;
-      border: 2px solid;
+      height: 180px;
       border-radius: 8px;
     }
   }
@@ -25,8 +28,6 @@
     }
   }
   &__title {
-    position: relative;
-    top: 180px;
-    left: 56px;
+    font-size: 20px;
   }
 }
