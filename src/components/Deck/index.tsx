@@ -14,13 +14,13 @@ const Deck = () => {
   const isCoinPlacedInTurn = useSelector(
     (state: RootState) => state.game.isCoinPlacedInTurn
   );
-  const isCardPicked = useSelector(
-    (state: RootState) => state.game.isCardPicked
+  const isCardPickedInTurn = useSelector(
+    (state: RootState) => state.game.isCardPickedInTurn
   );
   const array = Array.from({ length: 10 });
 
   const handleDeckClick = () => {
-    if (isCoinPlacedInTurn && !isCardPicked) {
+    if (isCoinPlacedInTurn && !isCardPickedInTurn) {
       getNewCard(
         {},
         {

@@ -12,7 +12,7 @@ export interface GameSliceState {
   playerTurnSequence: string[];
   playerTurnIndex: number;
   playerTurnId: string;
-  isCardPicked: boolean;
+  isCardPickedInTurn: boolean;
 }
 
 const initialState: GameSliceState = {
@@ -25,7 +25,7 @@ const initialState: GameSliceState = {
   playerTurnSequence: [],
   playerTurnIndex: 0,
   playerTurnId: "",
-  isCardPicked: false,
+  isCardPickedInTurn: false,
 };
 export const GameSlice = createSlice({
   name: "game",
@@ -44,6 +44,7 @@ export const GameSlice = createSlice({
         state.playerTurnId =
           action?.payload?.playerTurnSequence[action?.payload?.playerTurnIndex];
       }
+      state.isCardPickedInTurn = action?.payload?.isCardPickedInTurn;
     },
     setIsLocked: (state, action: PayloadAction<boolean>) => {
       state.isLocked = action?.payload || false;
@@ -115,7 +116,7 @@ export const GameSlice = createSlice({
       });
     },
     setIsCardPicked: (state, action: PayloadAction<boolean>) => {
-      state.isCardPicked = action?.payload;
+      state.isCardPickedInTurn = action?.payload;
     },
     clearGame: (state) => {
       state.isLocked = false;

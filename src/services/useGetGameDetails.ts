@@ -30,6 +30,7 @@ export type GetGameDetailsResponse = {
   isStarted: boolean;
   isLocked: boolean;
   isCoinPlacedInTurn: boolean;
+  isCardPickedInTurn: boolean;
   players: Record<string, PlayerDetails>;
   gameStatus: GAME_STATUS;
   teams: Record<string, TeamDetails>;
