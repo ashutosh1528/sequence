@@ -11,6 +11,13 @@
       flex-grow: 1;
       align-items: center;
     }
+    &__middle {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      width: 100%;
+      gap: 50px;
+    }
   }
   &__title {
     font-size: 48px;

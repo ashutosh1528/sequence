@@ -3,6 +3,7 @@ import Controls from "../components/Controls";
 import Deck from "../components/Deck";
 import Hand from "../components/Hand";
 import Score from "../components/Score";
+import TurnOrder from "../components/TurnOrder";
 import "../styles/gamePage.scss";
 
 const GamePage = () => {
@@ -13,7 +14,10 @@ const GamePage = () => {
       </div>
       <div className="game__container__panel">
         <div className="game__title">Sequence</div>
-        <Score />
+        <div className="game__container__middle">
+          <Score />
+          <TurnOrder />
+        </div>
         <Deck />
         <div className="game__bottom">
           <Hand />

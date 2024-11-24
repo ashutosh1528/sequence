@@ -1,0 +1,39 @@
+.turnOrder {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 4px;
+    &__order {
+      display: flex;
+      margin-top: 8px;
+      padding: 8px;
+      gap: 16px;
+    }
+    &__name {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  &__title {
+    font-size: 22px;
+  }
+  &__name {
+    font-size: 22px;
+    &--turn {
+      font-size: 28px;
+    }
+  }
+  &__youChip {
+    padding: 4px 12px;
+    font-size: 12px;
+    border: 1px solid #eeeaea;
+    background-color: #eeeaea;
+    border-radius: 16px;
+    color: #4a4a4a;
+    align-self: center;
+  }
+}
