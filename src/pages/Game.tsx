@@ -2,6 +2,7 @@ import Board from "../components/Board";
 import Controls from "../components/Controls";
 import Deck from "../components/Deck";
 import Hand from "../components/Hand";
+import LastCardPlayed from "../components/LastCardPlayed";
 import Score from "../components/Score";
 import TurnOrder from "../components/TurnOrder";
 import "../styles/gamePage.scss";
@@ -14,11 +15,14 @@ const GamePage = () => {
       </div>
       <div className="game__container__panel">
         <div className="game__title">Sequence</div>
-        <div className="game__container__middle">
+        <div className="game__container__scoreTurn">
           <Score />
           <TurnOrder />
         </div>
-        <Deck />
+        <div className="game__container__deck">
+          <Deck />
+          <LastCardPlayed />
+        </div>
         <div className="game__bottom">
           <Hand />
           <Controls />

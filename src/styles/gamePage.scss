@@ -11,12 +11,18 @@
       flex-grow: 1;
       align-items: center;
     }
-    &__middle {
+    &__scoreTurn {
       display: flex;
       justify-content: space-around;
       align-items: flex-start;
       width: 100%;
       gap: 50px;
+    }
+    &__deck {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 100px;
     }
   }
   &__title {

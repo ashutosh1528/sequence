@@ -13,6 +13,7 @@ export interface GameSliceState {
   playerTurnIndex: number;
   playerTurnId: string;
   isCardPickedInTurn: boolean;
+  lastCardPlayed: string;
 }
 
 const initialState: GameSliceState = {
@@ -26,6 +27,7 @@ const initialState: GameSliceState = {
   playerTurnIndex: 0,
   playerTurnId: "",
   isCardPickedInTurn: false,
+  lastCardPlayed: "",
 };
 export const GameSlice = createSlice({
   name: "game",
@@ -108,6 +110,7 @@ export const GameSlice = createSlice({
       const parts = cellId.split(".");
       const [x, y] = [parseInt(parts[0], 10), parseInt(parts[1], 10)];
       state.board[x][y].teamId = teamId;
+      state.lastCardPlayed = cardFace;
 
       if (!cardFace.includes("J")) {
         const cellsForFace = state.faceCellIdMapper[cardFace];
