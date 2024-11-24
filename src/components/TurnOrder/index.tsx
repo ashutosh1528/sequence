@@ -4,7 +4,9 @@ import { COLORS } from "../../store/types/teamSlice.types";
 import "./index.scss";
 
 const TurnOrder = () => {
-  const order = useSelector((state: RootState) => state.players.playerList);
+  const order = useSelector(
+    (state: RootState) => state.game.playerTurnSequence
+  );
   const players = useSelector((state: RootState) => state.players.players);
   const selfPlayerId = useSelector((state: RootState) => state.user.playerId);
   const playerTurnId = useSelector(

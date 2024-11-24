@@ -7,6 +7,7 @@ import {
   SetReadyStatus,
 } from "../types/playersSlice.types";
 import { toTitleCase } from "../../utils/toProperCase";
+import { SetTeamsType } from "../types/teamSlice.types";
 
 export interface PlayersState {
   players: {
@@ -76,6 +77,18 @@ export const playersSlice = createSlice({
         player.isOnline = action?.payload?.status || false;
       }
     },
+    setTeamIds: (state, action: PayloadAction<SetTeamsType>) => {
+      Object.values(action?.payload).forEach((team) => {
+        team.players.forEach((playerId) => {
+          state.players[playerId].teamId = team.id;
+        });
+      });
+    },
+    clearTeamIds: (state) => {
+      Object.values(state.players).forEach((player) => {
+        state.players[player.id].teamId = "";
+      });
+    },
     removePlayer: (state, action: PayloadAction<string>) => {
       const playerIdToRemove = action?.payload;
       if (state.players[playerIdToRemove]) {
@@ -100,6 +113,8 @@ export const {
   setOnlineStatus,
   removePlayer,
   clearPlayerStore,
+  setTeamIds,
+  clearTeamIds,
 } = playersSlice.actions;
 
 export default playersSlice.reducer;

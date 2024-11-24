@@ -5,9 +5,11 @@ import Cookies from "js-cookie";
 import socket from "../socket";
 import {
   addPlayer,
+  clearTeamIds,
   removePlayer,
   setOnlineStatus,
   setReadyStatus,
+  setTeamIds,
 } from "../../store/slices/players.slice";
 import { useToast } from "../../hooks/useToast";
 import useNavigateToHome from "../../hooks/useNavigateToHome";
@@ -90,11 +92,13 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         dispatch(setTeams(data?.teams || {}));
         dispatch(setPlayerTurnSequence(data?.playerTurnSequence || []));
         dispatch(setPlayerTurnIndex(data?.playerTurnIndex || 0));
+        dispatch(setTeamIds(data?.teams || {}));
         navigate("/lock");
       } else if (data?.lockStatus === false) {
         dispatch(setPlayerTurnSequence([]));
         dispatch(setPlayerTurnIndex(0));
         dispatch(clearTeams());
+        dispatch(clearTeamIds());
         navigate("/waiting");
       }
     });
