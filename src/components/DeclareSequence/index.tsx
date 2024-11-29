@@ -7,9 +7,11 @@ import {
   removeBoardCellsHighlights,
   setIsDeclaringSequence,
 } from "../../store/slices/game.slice";
+import useAnnounceSequence from "../../services/useAnnounceSequence";
 
 const DeclareSequence = () => {
   const dispatch = useDispatch();
+  const announceSequence = useAnnounceSequence();
   const isDeclaringSequence = useSelector(
     (state: RootState) => state.game.isDeclaringSequence
   );
@@ -29,6 +31,7 @@ const DeclareSequence = () => {
       setButtonText("Check Sequence");
     } else {
       // API call
+      announceSequence({ potentialSequence });
       console.log(potentialSequence);
       dispatch(clearPotentialSequence());
       dispatch(setIsDeclaringSequence(false));

@@ -3,4 +3,6 @@ export type BoardCellType = {
   face: string;
   teamId: string;
   isHighlighted: boolean;
+  partOfSequence: number;
+  sequenceIds: string[];
 };

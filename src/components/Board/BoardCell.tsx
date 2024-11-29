@@ -79,6 +79,7 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
           !isCoinPlacedInTurn) ||
         (wildCardInfo === "REMOVE_WILDCARD" &&
           boardCell.teamId &&
+          boardCell.partOfSequence === 0 &&
           !isCoinPlacedInTurn);
       if (canPlay) {
         playerMove(
@@ -143,6 +144,9 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
       className={`board__container__cell${isHovered ? "--hover" : ""}`}
       style={{
         border: getBorderStyle(),
+        opacity: `${
+          boardCell.partOfSequence > 0 && !isDeclaringSequence ? "0.7" : "1"
+        }`,
       }}
     >
       {boardCell.teamId && (

@@ -37,11 +37,19 @@ export const teamSlice = createSlice({
         state.teamColorMapper[team?.id] = getColor(team.color);
       });
     },
+    updateScore: (
+      state,
+      action: PayloadAction<{ teamId: string; score: number }>
+    ) => {
+      const { teamId, score } = action?.payload;
+      state.score[teamId] = score;
+      state.teams[teamId].score = score;
+    },
     clearTeams: (state) => {
       state.teams = {};
     },
   },
 });
 
-export const { setTeams, clearTeams } = teamSlice.actions;
+export const { setTeams, updateScore, clearTeams } = teamSlice.actions;
 export default teamSlice.reducer;

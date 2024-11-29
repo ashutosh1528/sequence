@@ -16,6 +16,7 @@ import useNavigateToHome from "../../hooks/useNavigateToHome";
 import { GAME_ID_COOKIE, PLAYER_ID_COOKIE } from "../../constants";
 import {
   placeCoin,
+  setBoard,
   setIsCardPicked,
   setIsCoinPlacedInTurn,
   setIsLocked,
@@ -23,7 +24,11 @@ import {
   setPlayerTurnIndex,
   setPlayerTurnSequence,
 } from "../../store/slices/game.slice";
-import { clearTeams, setTeams } from "../../store/slices/teams.slice";
+import {
+  clearTeams,
+  setTeams,
+  updateScore,
+} from "../../store/slices/teams.slice";
 import usePopulateRedux from "../../hooks/usePopulateRedux";
 
 type JoinType = {
@@ -115,6 +120,15 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       dispatch(setPlayerTurnIndex(data?.nextTurnIndex));
       dispatch(setIsCoinPlacedInTurn(false));
       dispatch(setIsCardPicked(false));
+    });
+    socket.on("scoreUpdated", (data) => {
+      dispatch(
+        updateScore({
+          score: data?.score || 0,
+          teamId: data?.teamId || "",
+        })
+      );
+      dispatch(setBoard(data?.board));
     });
   }, [dispatch, playerId]);
 
