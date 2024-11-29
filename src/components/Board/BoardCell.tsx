@@ -25,6 +25,14 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
     const [x, y] = cellId.split(".");
     return [parseInt(x, 10), parseInt(y, 10)];
   }, [cellId]);
+  const isCorner = useMemo(() => {
+    const [x, y] = cellId.split(".").map((cell) => parseInt(cell, 10));
+    if (x === 0 && y === 0) return true;
+    if (x === 0 && y === 9) return true;
+    if (x === 9 && y === 0) return true;
+    if (x === 9 && y === 9) return true;
+    return false;
+  }, [cellId]);
 
   const boardCell = useSelector((state: RootState) => state.game.board[x][y]);
   const cardToPlay = useSelector((state: RootState) => state.user.cardToPlay);
@@ -64,7 +72,7 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
   const handleCellClick = () => {
     if (
       isDeclaringSequence &&
-      boardCell.teamId === playerTeamId &&
+      (boardCell.teamId === playerTeamId || isCorner) &&
       potentialSequence.length < 5
     ) {
       if (!potentialSequence.includes(cellId)) {
@@ -107,7 +115,10 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
       setIsHovered(true);
     } else if (boardCell.isHighlighted && !boardCell.teamId) {
       setIsHovered(true);
-    } else if (isDeclaringSequence && boardCell.teamId === playerTeamId) {
+    } else if (
+      isDeclaringSequence &&
+      (boardCell.teamId === playerTeamId || isCorner)
+    ) {
       setIsHovered(true);
     }
   };
@@ -124,7 +135,10 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
   };
 
   const getBorderStyle = () => {
-    if (isDeclaringSequence && boardCell.teamId === playerTeamId) {
+    if (
+      isDeclaringSequence &&
+      (boardCell.teamId === playerTeamId || isCorner)
+    ) {
       if (potentialSequence.includes(cellId)) {
         return "2px solid #3efb01";
       }
@@ -145,7 +159,9 @@ const BoardCell = ({ cellId }: { cellId: string }) => {
       style={{
         border: getBorderStyle(),
         opacity: `${
-          boardCell.partOfSequence > 0 && !isDeclaringSequence ? "0.7" : "1"
+          boardCell.partOfSequence > 0 && !isDeclaringSequence && !isCorner
+            ? "0.7"
+            : "1"
         }`,
       }}
     >
