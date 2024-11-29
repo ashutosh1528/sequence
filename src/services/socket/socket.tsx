@@ -21,6 +21,7 @@ import {
   setIsCoinPlacedInTurn,
   setIsLocked,
   setIsStarted,
+  setIsWinnerModalOpen,
   setPlayerTurnIndex,
   setPlayerTurnSequence,
 } from "../../store/slices/game.slice";
@@ -129,6 +130,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         })
       );
       dispatch(setBoard(data?.board));
+      if (data?.winnerTeamId) {
+        dispatch(
+          setIsWinnerModalOpen({
+            isOpen: true,
+            winnerTeamId: data?.winnerTeamId,
+          })
+        );
+      }
     });
   }, [dispatch, playerId]);
 

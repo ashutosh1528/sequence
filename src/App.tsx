@@ -11,6 +11,7 @@ import useGetGameDetails, { GAME_STATUS } from "./services/useGetGameDetails";
 import { useSocket } from "./services/socket/socket";
 import useNavigateToHome from "./hooks/useNavigateToHome";
 import usePopulateRedux from "./hooks/usePopulateRedux";
+import WinnerModal from "./components/WinnerModal";
 
 const App = () => {
   const { playerOnlineEvent, playerOfflineEvent } = useSocket();
@@ -64,6 +65,7 @@ const App = () => {
         <Route path="lock" element={<PrivateRoute Component={LockPage} />} />
         <Route path="game" element={<PrivateRoute Component={GamePage} />} />
       </Routes>
+      <WinnerModal />
     </div>
   );
 };

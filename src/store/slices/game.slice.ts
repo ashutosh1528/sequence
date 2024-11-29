@@ -16,6 +16,10 @@ export interface GameSliceState {
   lastCardPlayed: string;
   isDeclaringSequence: boolean;
   potentialSequence: string[];
+  winnerModal: {
+    isOpen: boolean;
+    winnerTeamId: string;
+  };
 }
 
 const initialState: GameSliceState = {
@@ -32,6 +36,10 @@ const initialState: GameSliceState = {
   lastCardPlayed: "",
   isDeclaringSequence: false,
   potentialSequence: [],
+  winnerModal: {
+    isOpen: false,
+    winnerTeamId: "",
+  },
 };
 export const GameSlice = createSlice({
   name: "game",
@@ -154,6 +162,12 @@ export const GameSlice = createSlice({
     clearPotentialSequence: (state) => {
       state.potentialSequence = [];
     },
+    setIsWinnerModalOpen: (
+      state,
+      action: PayloadAction<{ isOpen: boolean; winnerTeamId: string }>
+    ) => {
+      state.winnerModal = action?.payload;
+    },
     clearGame: (state) => {
       state.isLocked = false;
     },
@@ -178,5 +192,6 @@ export const {
   clearPotentialSequence,
   removeFromPotentialSequence,
   removeBoardCellsHighlights,
+  setIsWinnerModalOpen,
 } = GameSlice.actions;
 export default GameSlice.reducer;
