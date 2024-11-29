@@ -3,10 +3,14 @@ import Score from "../Score";
 import Button from "../Button";
 import { RootState } from "../../store";
 import { setIsWinnerModalOpen } from "../../store/slices/game.slice";
+import useEndGame from "../../services/useEndGame";
+import useResetGame from "../../services/useResetGame";
 import "./index.scss";
 
 const WinnerModal = () => {
   const dispatch = useDispatch();
+  const endGame = useEndGame();
+  const resetGame = useResetGame();
   const modalData = useSelector((state: RootState) => state.game.winnerModal);
   const playerId = useSelector((state: RootState) => state.user.playerId);
   const isPlayerAdmin = useSelector((state: RootState) => state.user.isAdmin);
@@ -24,17 +28,18 @@ const WinnerModal = () => {
   };
 
   const handleEndGame = () => {
-    // api call
-    // clear redux
-    // socket disconnect
-    // navigate to home
-    closeModal();
+    endGame(
+      {},
+      {
+        onSuccess: () => {
+          closeModal();
+        },
+      }
+    );
   };
 
   const handleRestartGame = () => {
-    // reset board
-    // score
-    // inital game
+    resetGame({});
     closeModal();
   };
 

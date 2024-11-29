@@ -169,7 +169,7 @@ export const GameSlice = createSlice({
       state.winnerModal = action?.payload;
     },
     clearGame: (state) => {
-      state.isLocked = false;
+      state = { ...initialState };
     },
   },
 });

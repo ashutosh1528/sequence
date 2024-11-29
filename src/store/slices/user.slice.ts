@@ -43,13 +43,7 @@ export const userSlice = createSlice({
       state.cardToPlay = action?.payload || "";
     },
     clearUserStore: (state) => {
-      state.gameId = "";
-      state.playerId = "";
-      state.name = "";
-      state.isAdmin = false;
-      state.isReady = false;
-      state.isOnline = false;
-      state.cardToPlay = "";
+      state = { ...initialState };
     },
   },
 });

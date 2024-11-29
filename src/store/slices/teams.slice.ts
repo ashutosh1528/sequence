@@ -46,7 +46,7 @@ export const teamSlice = createSlice({
       state.teams[teamId].score = score;
     },
     clearTeams: (state) => {
-      state.teams = {};
+      state = { ...initialState };
     },
   },
 });

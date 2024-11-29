@@ -100,8 +100,7 @@ export const playersSlice = createSlice({
       }
     },
     clearPlayerStore: (state) => {
-      state.playerList = [];
-      state.players = {};
+      state = { ...initialState };
     },
   },
 });

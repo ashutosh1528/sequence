@@ -44,6 +44,7 @@ interface SocketContextProps {
   playerOnlineEvent: () => void;
   playerKickedEvent: (id: string) => void;
   playerExitEvent: () => void;
+  disconnectSocket: () => void;
 }
 
 const SocketContext = createContext<SocketContextProps | null>(null);
@@ -139,6 +140,20 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         );
       }
     });
+    socket.on("gameClosed", (data) => {
+      if (data?.isEnded) {
+        dispatch(setIsWinnerModalOpen({ isOpen: false, winnerTeamId: "" }));
+        clearRedux();
+        socket.disconnect();
+        navigateToHome();
+      }
+    });
+    socket.on("gameReset", (data) => {
+      if (data?.isReset) {
+        dispatch(setIsWinnerModalOpen({ isOpen: false, winnerTeamId: "" }));
+        window.location.reload();
+      }
+    });
   }, [dispatch, playerId]);
 
   const createGameEvent = ({ gameId, playerId }: JoinType) => {
@@ -198,6 +213,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     socket.emit("exitGame", { gameId, playerId });
   };
 
+  const disconnectSocket = () => {
+    socket.disconnect();
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -207,6 +226,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         playerOfflineEvent,
         playerKickedEvent,
         playerExitEvent,
+        disconnectSocket,
       }}
     >
       {children}
