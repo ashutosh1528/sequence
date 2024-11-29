@@ -21,6 +21,9 @@ const Hand = () => {
   const currentTurnPlayerId = useSelector(
     (state: RootState) => state.game.playerTurnId
   );
+  const isDeclaringSequence = useSelector(
+    (state: RootState) => state.game.isDeclaringSequence
+  );
   const [isMyTurn, setIsMyTurn] = useState(
     selfPlayerId === currentTurnPlayerId
   );
@@ -60,7 +63,7 @@ const Hand = () => {
   };
 
   const handleOnCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!isCoinPlacedInTurn && isMyTurn) {
+    if (!isCoinPlacedInTurn && isMyTurn && !isDeclaringSequence) {
       const card = event.currentTarget.dataset.cardface;
       raiseHand(card || "");
       lowerHand(selectedCard || "");
@@ -76,7 +79,10 @@ const Hand = () => {
 
   return (
     <div className="hand">
-      <div className="hand__container">
+      <div
+        className="hand__container"
+        style={{ opacity: isDeclaringSequence ? "0.2" : "" }}
+      >
         {data?.cards?.map((card, idx) => {
           const angle = -20 + idx * 10;
           return (

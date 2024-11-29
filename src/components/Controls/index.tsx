@@ -16,6 +16,9 @@ const Controls = () => {
   const currentTurnPlayerId = useSelector(
     (state: RootState) => state.game.playerTurnId
   );
+  const isDeclaringSequence = useSelector(
+    (state: RootState) => state.game.isDeclaringSequence
+  );
   const [isMyTurn, setIsMyTurn] = useState(
     selfPlayerId === currentTurnPlayerId
   );
@@ -25,11 +28,13 @@ const Controls = () => {
   }, [selfPlayerId, currentTurnPlayerId]);
 
   const handleEndTurn = () => {
-    endPlayerTurn({});
+    if (!isDeclaringSequence) {
+      endPlayerTurn({});
+    }
   };
 
   const handleDiscardCard = () => {
-    if (cardToPlay)
+    if (cardToPlay && !isDeclaringSequence)
       discardCard(
         {
           cardFace: cardToPlay,
@@ -50,10 +55,14 @@ const Controls = () => {
     <div className="controls__container">
       <Button
         label="Discard card"
-        disabled={!isMyTurn}
+        disabled={!isMyTurn || isDeclaringSequence}
         onClick={handleDiscardCard}
       />
-      <Button label="End turn " disabled={!isMyTurn} onClick={handleEndTurn} />
+      <Button
+        label="End turn "
+        disabled={!isMyTurn || isDeclaringSequence}
+        onClick={handleEndTurn}
+      />
     </div>
   );
 };

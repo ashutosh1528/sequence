@@ -17,10 +17,13 @@ const Deck = () => {
   const isCardPickedInTurn = useSelector(
     (state: RootState) => state.game.isCardPickedInTurn
   );
+  const isDeclaringSequence = useSelector(
+    (state: RootState) => state.game.isDeclaringSequence
+  );
   const array = Array.from({ length: 10 });
 
   const handleDeckClick = () => {
-    if (isCoinPlacedInTurn && !isCardPickedInTurn) {
+    if (isCoinPlacedInTurn && !isCardPickedInTurn && !isDeclaringSequence) {
       getNewCard(
         {},
         {
@@ -40,7 +43,11 @@ const Deck = () => {
 
   return (
     <div className="deck__container">
-      <div className="deck__container__pile" onClick={handleDeckClick}>
+      <div
+        className="deck__container__pile"
+        style={{ opacity: isDeclaringSequence ? "0.2" : "" }}
+        onClick={handleDeckClick}
+      >
         {array.map((_, index) => (
           <img
             src={BackCard}

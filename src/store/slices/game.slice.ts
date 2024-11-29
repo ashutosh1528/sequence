@@ -14,6 +14,8 @@ export interface GameSliceState {
   playerTurnId: string;
   isCardPickedInTurn: boolean;
   lastCardPlayed: string;
+  isDeclaringSequence: boolean;
+  potentialSequence: string[];
 }
 
 const initialState: GameSliceState = {
@@ -28,6 +30,8 @@ const initialState: GameSliceState = {
   playerTurnId: "",
   isCardPickedInTurn: false,
   lastCardPlayed: "",
+  isDeclaringSequence: false,
+  potentialSequence: [],
 };
 export const GameSlice = createSlice({
   name: "game",
@@ -82,6 +86,7 @@ export const GameSlice = createSlice({
         cellsForFace.forEach((cell) => {
           const [x, y] = cell.split(".");
           state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = true;
+          state.boardCellsToHighlight.push(cell);
         });
       }
     },
@@ -92,8 +97,20 @@ export const GameSlice = createSlice({
         cellsForFace.forEach((cell) => {
           const [x, y] = cell.split(".");
           state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = false;
+          state.boardCellsToHighlight = state.boardCellsToHighlight.filter(
+            (cellId) => cellId !== cell
+          );
         });
       }
+    },
+    removeBoardCellsHighlights: (state) => {
+      if (state.boardCellsToHighlight.length) {
+        state.boardCellsToHighlight.forEach((cell) => {
+          const [x, y] = cell.split(".");
+          state.board[parseInt(x, 10)][parseInt(y, 10)].isHighlighted = false;
+        });
+      }
+      state.boardCellsToHighlight = [];
     },
     setIsCoinPlacedInTurn: (state, action: PayloadAction<boolean>) => {
       state.isCoinPlacedInTurn = action?.payload;
@@ -123,6 +140,20 @@ export const GameSlice = createSlice({
     setIsCardPicked: (state, action: PayloadAction<boolean>) => {
       state.isCardPickedInTurn = action?.payload;
     },
+    setIsDeclaringSequence: (state, action: PayloadAction<boolean>) => {
+      state.isDeclaringSequence = action?.payload;
+    },
+    addToPotentialSequence: (state, action: PayloadAction<string>) => {
+      if (action?.payload) state.potentialSequence.push(action?.payload);
+    },
+    removeFromPotentialSequence: (state, action: PayloadAction<string>) => {
+      state.potentialSequence = state.potentialSequence.filter(
+        (id) => id !== action?.payload
+      );
+    },
+    clearPotentialSequence: (state) => {
+      state.potentialSequence = [];
+    },
     clearGame: (state) => {
       state.isLocked = false;
     },
@@ -142,5 +173,10 @@ export const {
   setPlayerTurnSequence,
   setPlayerTurnIndex,
   setIsCardPicked,
+  setIsDeclaringSequence,
+  addToPotentialSequence,
+  clearPotentialSequence,
+  removeFromPotentialSequence,
+  removeBoardCellsHighlights,
 } = GameSlice.actions;
 export default GameSlice.reducer;

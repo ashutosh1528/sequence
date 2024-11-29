@@ -1,6 +1,7 @@
 import Board from "../components/Board";
 import Controls from "../components/Controls";
 import Deck from "../components/Deck";
+import DeclareSequence from "../components/DeclareSequence";
 import Hand from "../components/Hand";
 import LastCardPlayed from "../components/LastCardPlayed";
 import Score from "../components/Score";
@@ -22,6 +23,7 @@ const GamePage = () => {
         <div className="game__container__deck">
           <Deck />
           <LastCardPlayed />
+          <DeclareSequence />
         </div>
         <div className="game__bottom">
           <Hand />

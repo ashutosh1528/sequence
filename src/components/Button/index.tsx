@@ -5,12 +5,14 @@ type ButtonProps = {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   size?: "large" | "medium" | "small";
   disabled?: boolean;
+  width?: number;
 };
 const Button = ({
   label,
   size = "medium",
   onClick,
   disabled = false,
+  width,
 }: ButtonProps) => {
   const getButtonSizeClass = () => {
     if (size === "large") return "button__large";
@@ -26,6 +28,7 @@ const Button = ({
     <button
       className={`button ${getButtonSizeClass()} ${getDisabledClass()}`}
       onClick={onClick}
+      style={{ width: width ? `${width}px` : "" }}
     >
       {label}
     </button>
