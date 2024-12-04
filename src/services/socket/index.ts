@@ -1,6 +1,9 @@
 import { Socket, io } from "socket.io-client";
 
-const socket: Socket = io("http://localhost:9000", { autoConnect: false });
+const socket: Socket = io("https://api.ashutoshagrawal.dev", {
+  path: "/sequence/socket.io",
+  autoConnect: false,
+});
 socket.on("connect", () => {
   console.log("Socket connected:", socket.id);
 });
